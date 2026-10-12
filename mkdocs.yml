@@ -22,8 +22,8 @@ nav:
       - decisions/010-kyverno-audit-garde-fous.md
       - decisions/011-retrait-obi-sdk-otel.md
       - decisions/012-pas-de-rendered-manifests.md
-  - Ce qui a cassé: incidents.md
-  - Limites connues: limites.md
+  - Retours d'expérience: incidents.md
+  - Prochaines étapes: limites.md
   - Les dépôts:
       - projets/talos-infra.md
       - projets/talos-argocd.md
@@ -81,8 +81,8 @@ plugins:
           nav_translations:
             Accueil: Home
             Décisions: Decisions
-            Ce qui a cassé: What broke
-            Limites connues: Known limits
+            Retours d'expérience: Lessons learned
+            Prochaines étapes: Next steps
             Les dépôts: Repositories
             Questions d'entretien: Interview questions
 

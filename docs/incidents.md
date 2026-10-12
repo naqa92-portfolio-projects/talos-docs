@@ -1,4 +1,4 @@
-# Ce qui a cassé
+# Retours d'expérience
 
 Les pannes sont la partie la plus instructive du projet. Chacune suit le même format : **symptôme →
 cause → correctif → leçon**.

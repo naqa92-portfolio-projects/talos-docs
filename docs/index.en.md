@@ -74,7 +74,7 @@ measurement, and every rollback on an A/B proof. This is the most useful part to
 === "10 minutes"
 
     [Architecture](architecture.md) → [Decisions](decisions/index.md) →
-    [What broke](incidents.md) → [Known limits](limites.md).
+    [Lessons learned](incidents.md) → [Next steps](limites.md).
 
 === "Preparing a technical interview"
 

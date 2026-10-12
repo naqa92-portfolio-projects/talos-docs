@@ -74,7 +74,7 @@ mesure, et chaque retour en arrière sur une preuve A/B. C'est la partie la plus
 === "10 minutes"
 
     [Architecture](architecture.md) → [Décisions](decisions/index.md) →
-    [Ce qui a cassé](incidents.md) → [Limites connues](limites.md).
+    [Retours d'expérience](incidents.md) → [Prochaines étapes](limites.md).
 
 === "Préparer un entretien technique"
 

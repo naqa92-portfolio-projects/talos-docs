@@ -1,4 +1,4 @@
-# Known limits
+# Accepted limits and next steps
 
 What the platform does not do, or does not do yet. Most are costed choices; the rest form the
 roadmap.

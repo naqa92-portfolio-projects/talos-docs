@@ -1,4 +1,4 @@
-# What broke
+# Lessons learned
 
 Outages are the most instructive part of the project. Each one follows the same format: **symptom →
 cause → fix → lesson**.

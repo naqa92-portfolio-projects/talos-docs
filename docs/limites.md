@@ -1,4 +1,4 @@
-# Limites connues
+# Limites assumées et prochaines étapes
 
 Ce que la plateforme ne fait pas, ou pas encore. La plupart sont des choix chiffrés ; le reste forme la
 feuille de route.
