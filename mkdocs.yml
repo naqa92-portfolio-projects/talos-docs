@@ -1,0 +1,112 @@
+site_name: Taloslab
+site_description: Plateforme Kubernetes de bout en bout sur Hetzner — étude de cas
+site_url: https://naqa92-portfolio-projects.github.io/talos-docs/
+repo_url: https://github.com/naqa92-portfolio-projects/talos-docs
+repo_name: talos-docs
+edit_uri: edit/main/docs/
+
+nav:
+  - Accueil: index.md
+  - Architecture: architecture.md
+  - Décisions:
+      - decisions/index.md
+      - decisions/001-talos-hetzner-terraform.md
+      - decisions/002-control-plane-unique.md
+      - decisions/003-pas-de-haute-disponibilite.md
+      - decisions/004-retour-hetzner.md
+      - decisions/005-argocd-flux-argocd.md
+      - decisions/006-app-of-apps-sync-waves.md
+      - decisions/007-crossplane-api-self-service.md
+      - decisions/008-gateway-api-cilium.md
+      - decisions/009-secrets-infisical-eso.md
+      - decisions/010-kyverno-audit-garde-fous.md
+      - decisions/011-retrait-obi-sdk-otel.md
+      - decisions/012-pas-de-rendered-manifests.md
+  - Ce qui a cassé: incidents.md
+  - Limites connues: limites.md
+  - Les dépôts:
+      - projets/talos-infra.md
+      - projets/talos-argocd.md
+      - projets/talos-backstage.md
+      - projets/sre-agent.md
+      - projets/talos-landing.md
+      - projets/talos-fluxcd.md
+  - Questions d'entretien: faq.md
+
+theme:
+  name: material
+  language: fr
+  features:
+    - content.code.copy
+    - navigation.footer
+    - navigation.indexes
+    - navigation.sections
+    - navigation.tracking
+    - navigation.top
+    - search.suggest
+    - search.highlight
+    - toc.follow
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: white
+      accent: blue
+      toggle:
+        icon: material/brightness-7
+        name: Mode sombre
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: grey
+      accent: blue
+      toggle:
+        icon: material/brightness-4
+        name: Mode clair
+
+plugins:
+  - search
+  - i18n:
+      docs_structure: suffix
+      fallback_to_default: true
+      reconfigure_material: true
+      reconfigure_search: true
+      languages:
+        - locale: fr
+          default: true
+          name: Français
+          build: true
+        - locale: en
+          name: English
+          build: true
+          site_description: End-to-end Kubernetes platform on Hetzner — case study
+          nav_translations:
+            Accueil: Home
+            Décisions: Decisions
+            Ce qui a cassé: What broke
+            Limites connues: Known limits
+            Les dépôts: Repositories
+            Questions d'entretien: Interview questions
+
+markdown_extensions:
+  - admonition
+  - attr_list
+  - md_in_html
+  - tables
+  - pymdownx.details
+  - pymdownx.highlight:
+      anchor_linenums: false
+  - pymdownx.inlinehilite
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.tabbed:
+      alternate_style: true
+  - toc:
+      toc_depth: 3
+      permalink: "#"
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/naqa92-portfolio-projects
