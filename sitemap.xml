@@ -1,0 +1,339 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+    <url>
+        <loc>https://naqa92-portfolio-projects.github.io/talos-docs/</loc>
+        <lastmod>2026-10-12</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="fr" href="https://naqa92-portfolio-projects.github.io/talos-docs/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://naqa92-portfolio-projects.github.io/talos-docs/en/"/>
+    </url>
+    <url>
+        <loc>https://naqa92-portfolio-projects.github.io/talos-docs/architecture/</loc>
+        <lastmod>2026-10-12</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="fr" href="https://naqa92-portfolio-projects.github.io/talos-docs/architecture/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://naqa92-portfolio-projects.github.io/talos-docs/en/architecture/"/>
+    </url>
+    <url>
+        <loc>https://naqa92-portfolio-projects.github.io/talos-docs/faq/</loc>
+        <lastmod>2026-10-12</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="fr" href="https://naqa92-portfolio-projects.github.io/talos-docs/faq/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://naqa92-portfolio-projects.github.io/talos-docs/en/faq/"/>
+    </url>
+    <url>
+        <loc>https://naqa92-portfolio-projects.github.io/talos-docs/incidents/</loc>
+        <lastmod>2026-10-12</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="fr" href="https://naqa92-portfolio-projects.github.io/talos-docs/incidents/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://naqa92-portfolio-projects.github.io/talos-docs/en/incidents/"/>
+    </url>
+    <url>
+        <loc>https://naqa92-portfolio-projects.github.io/talos-docs/limites/</loc>
+        <lastmod>2026-10-12</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="fr" href="https://naqa92-portfolio-projects.github.io/talos-docs/limites/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://naqa92-portfolio-projects.github.io/talos-docs/en/limites/"/>
+    </url>
+    <url>
+        <loc>https://naqa92-portfolio-projects.github.io/talos-docs/decisions/</loc>
+        <lastmod>2026-10-12</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="fr" href="https://naqa92-portfolio-projects.github.io/talos-docs/decisions/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://naqa92-portfolio-projects.github.io/talos-docs/en/decisions/"/>
+    </url>
+    <url>
+        <loc>https://naqa92-portfolio-projects.github.io/talos-docs/decisions/001-talos-hetzner-terraform/</loc>
+        <lastmod>2026-10-12</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="fr" href="https://naqa92-portfolio-projects.github.io/talos-docs/decisions/001-talos-hetzner-terraform/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://naqa92-portfolio-projects.github.io/talos-docs/en/decisions/001-talos-hetzner-terraform/"/>
+    </url>
+    <url>
+        <loc>https://naqa92-portfolio-projects.github.io/talos-docs/decisions/002-control-plane-unique/</loc>
+        <lastmod>2026-10-12</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="fr" href="https://naqa92-portfolio-projects.github.io/talos-docs/decisions/002-control-plane-unique/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://naqa92-portfolio-projects.github.io/talos-docs/en/decisions/002-control-plane-unique/"/>
+    </url>
+    <url>
+        <loc>https://naqa92-portfolio-projects.github.io/talos-docs/decisions/003-pas-de-haute-disponibilite/</loc>
+        <lastmod>2026-10-12</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="fr" href="https://naqa92-portfolio-projects.github.io/talos-docs/decisions/003-pas-de-haute-disponibilite/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://naqa92-portfolio-projects.github.io/talos-docs/en/decisions/003-pas-de-haute-disponibilite/"/>
+    </url>
+    <url>
+        <loc>https://naqa92-portfolio-projects.github.io/talos-docs/decisions/004-retour-hetzner/</loc>
+        <lastmod>2026-10-12</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="fr" href="https://naqa92-portfolio-projects.github.io/talos-docs/decisions/004-retour-hetzner/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://naqa92-portfolio-projects.github.io/talos-docs/en/decisions/004-retour-hetzner/"/>
+    </url>
+    <url>
+        <loc>https://naqa92-portfolio-projects.github.io/talos-docs/decisions/005-argocd-flux-argocd/</loc>
+        <lastmod>2026-10-12</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="fr" href="https://naqa92-portfolio-projects.github.io/talos-docs/decisions/005-argocd-flux-argocd/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://naqa92-portfolio-projects.github.io/talos-docs/en/decisions/005-argocd-flux-argocd/"/>
+    </url>
+    <url>
+        <loc>https://naqa92-portfolio-projects.github.io/talos-docs/decisions/006-app-of-apps-sync-waves/</loc>
+        <lastmod>2026-10-12</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="fr" href="https://naqa92-portfolio-projects.github.io/talos-docs/decisions/006-app-of-apps-sync-waves/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://naqa92-portfolio-projects.github.io/talos-docs/en/decisions/006-app-of-apps-sync-waves/"/>
+    </url>
+    <url>
+        <loc>https://naqa92-portfolio-projects.github.io/talos-docs/decisions/007-crossplane-api-self-service/</loc>
+        <lastmod>2026-10-12</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="fr" href="https://naqa92-portfolio-projects.github.io/talos-docs/decisions/007-crossplane-api-self-service/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://naqa92-portfolio-projects.github.io/talos-docs/en/decisions/007-crossplane-api-self-service/"/>
+    </url>
+    <url>
+        <loc>https://naqa92-portfolio-projects.github.io/talos-docs/decisions/008-gateway-api-cilium/</loc>
+        <lastmod>2026-10-12</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="fr" href="https://naqa92-portfolio-projects.github.io/talos-docs/decisions/008-gateway-api-cilium/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://naqa92-portfolio-projects.github.io/talos-docs/en/decisions/008-gateway-api-cilium/"/>
+    </url>
+    <url>
+        <loc>https://naqa92-portfolio-projects.github.io/talos-docs/decisions/009-secrets-infisical-eso/</loc>
+        <lastmod>2026-10-12</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="fr" href="https://naqa92-portfolio-projects.github.io/talos-docs/decisions/009-secrets-infisical-eso/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://naqa92-portfolio-projects.github.io/talos-docs/en/decisions/009-secrets-infisical-eso/"/>
+    </url>
+    <url>
+        <loc>https://naqa92-portfolio-projects.github.io/talos-docs/decisions/010-kyverno-audit-garde-fous/</loc>
+        <lastmod>2026-10-12</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="fr" href="https://naqa92-portfolio-projects.github.io/talos-docs/decisions/010-kyverno-audit-garde-fous/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://naqa92-portfolio-projects.github.io/talos-docs/en/decisions/010-kyverno-audit-garde-fous/"/>
+    </url>
+    <url>
+        <loc>https://naqa92-portfolio-projects.github.io/talos-docs/decisions/011-retrait-obi-sdk-otel/</loc>
+        <lastmod>2026-10-12</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="fr" href="https://naqa92-portfolio-projects.github.io/talos-docs/decisions/011-retrait-obi-sdk-otel/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://naqa92-portfolio-projects.github.io/talos-docs/en/decisions/011-retrait-obi-sdk-otel/"/>
+    </url>
+    <url>
+        <loc>https://naqa92-portfolio-projects.github.io/talos-docs/decisions/012-pas-de-rendered-manifests/</loc>
+        <lastmod>2026-10-12</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="fr" href="https://naqa92-portfolio-projects.github.io/talos-docs/decisions/012-pas-de-rendered-manifests/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://naqa92-portfolio-projects.github.io/talos-docs/en/decisions/012-pas-de-rendered-manifests/"/>
+    </url>
+    <url>
+        <loc>https://naqa92-portfolio-projects.github.io/talos-docs/projets/sre-agent/</loc>
+        <lastmod>2026-10-12</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="fr" href="https://naqa92-portfolio-projects.github.io/talos-docs/projets/sre-agent/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://naqa92-portfolio-projects.github.io/talos-docs/en/projets/sre-agent/"/>
+    </url>
+    <url>
+        <loc>https://naqa92-portfolio-projects.github.io/talos-docs/projets/talos-argocd/</loc>
+        <lastmod>2026-10-12</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="fr" href="https://naqa92-portfolio-projects.github.io/talos-docs/projets/talos-argocd/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://naqa92-portfolio-projects.github.io/talos-docs/en/projets/talos-argocd/"/>
+    </url>
+    <url>
+        <loc>https://naqa92-portfolio-projects.github.io/talos-docs/projets/talos-backstage/</loc>
+        <lastmod>2026-10-12</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="fr" href="https://naqa92-portfolio-projects.github.io/talos-docs/projets/talos-backstage/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://naqa92-portfolio-projects.github.io/talos-docs/en/projets/talos-backstage/"/>
+    </url>
+    <url>
+        <loc>https://naqa92-portfolio-projects.github.io/talos-docs/projets/talos-fluxcd/</loc>
+        <lastmod>2026-10-12</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="fr" href="https://naqa92-portfolio-projects.github.io/talos-docs/projets/talos-fluxcd/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://naqa92-portfolio-projects.github.io/talos-docs/en/projets/talos-fluxcd/"/>
+    </url>
+    <url>
+        <loc>https://naqa92-portfolio-projects.github.io/talos-docs/projets/talos-infra/</loc>
+        <lastmod>2026-10-12</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="fr" href="https://naqa92-portfolio-projects.github.io/talos-docs/projets/talos-infra/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://naqa92-portfolio-projects.github.io/talos-docs/en/projets/talos-infra/"/>
+    </url>
+    <url>
+        <loc>https://naqa92-portfolio-projects.github.io/talos-docs/projets/talos-landing/</loc>
+        <lastmod>2026-10-12</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="fr" href="https://naqa92-portfolio-projects.github.io/talos-docs/projets/talos-landing/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://naqa92-portfolio-projects.github.io/talos-docs/en/projets/talos-landing/"/>
+    </url>
+    <url>
+        <loc>https://naqa92-portfolio-projects.github.io/talos-docs/en/</loc>
+        <lastmod>2026-10-12</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://naqa92-portfolio-projects.github.io/talos-docs/en/"/>
+        <xhtml:link rel="alternate" hreflang="fr" href="https://naqa92-portfolio-projects.github.io/talos-docs/"/>
+    </url>
+    <url>
+        <loc>https://naqa92-portfolio-projects.github.io/talos-docs/en/architecture/</loc>
+        <lastmod>2026-10-12</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://naqa92-portfolio-projects.github.io/talos-docs/en/architecture/"/>
+        <xhtml:link rel="alternate" hreflang="fr" href="https://naqa92-portfolio-projects.github.io/talos-docs/architecture/"/>
+    </url>
+    <url>
+        <loc>https://naqa92-portfolio-projects.github.io/talos-docs/en/faq/</loc>
+        <lastmod>2026-10-12</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://naqa92-portfolio-projects.github.io/talos-docs/en/faq/"/>
+        <xhtml:link rel="alternate" hreflang="fr" href="https://naqa92-portfolio-projects.github.io/talos-docs/faq/"/>
+    </url>
+    <url>
+        <loc>https://naqa92-portfolio-projects.github.io/talos-docs/en/incidents/</loc>
+        <lastmod>2026-10-12</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://naqa92-portfolio-projects.github.io/talos-docs/en/incidents/"/>
+        <xhtml:link rel="alternate" hreflang="fr" href="https://naqa92-portfolio-projects.github.io/talos-docs/incidents/"/>
+    </url>
+    <url>
+        <loc>https://naqa92-portfolio-projects.github.io/talos-docs/en/limites/</loc>
+        <lastmod>2026-10-12</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://naqa92-portfolio-projects.github.io/talos-docs/en/limites/"/>
+        <xhtml:link rel="alternate" hreflang="fr" href="https://naqa92-portfolio-projects.github.io/talos-docs/limites/"/>
+    </url>
+    <url>
+        <loc>https://naqa92-portfolio-projects.github.io/talos-docs/en/decisions/</loc>
+        <lastmod>2026-10-12</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://naqa92-portfolio-projects.github.io/talos-docs/en/decisions/"/>
+        <xhtml:link rel="alternate" hreflang="fr" href="https://naqa92-portfolio-projects.github.io/talos-docs/decisions/"/>
+    </url>
+    <url>
+        <loc>https://naqa92-portfolio-projects.github.io/talos-docs/en/decisions/001-talos-hetzner-terraform/</loc>
+        <lastmod>2026-10-12</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://naqa92-portfolio-projects.github.io/talos-docs/en/decisions/001-talos-hetzner-terraform/"/>
+        <xhtml:link rel="alternate" hreflang="fr" href="https://naqa92-portfolio-projects.github.io/talos-docs/decisions/001-talos-hetzner-terraform/"/>
+    </url>
+    <url>
+        <loc>https://naqa92-portfolio-projects.github.io/talos-docs/en/decisions/002-control-plane-unique/</loc>
+        <lastmod>2026-10-12</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://naqa92-portfolio-projects.github.io/talos-docs/en/decisions/002-control-plane-unique/"/>
+        <xhtml:link rel="alternate" hreflang="fr" href="https://naqa92-portfolio-projects.github.io/talos-docs/decisions/002-control-plane-unique/"/>
+    </url>
+    <url>
+        <loc>https://naqa92-portfolio-projects.github.io/talos-docs/en/decisions/003-pas-de-haute-disponibilite/</loc>
+        <lastmod>2026-10-12</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://naqa92-portfolio-projects.github.io/talos-docs/en/decisions/003-pas-de-haute-disponibilite/"/>
+        <xhtml:link rel="alternate" hreflang="fr" href="https://naqa92-portfolio-projects.github.io/talos-docs/decisions/003-pas-de-haute-disponibilite/"/>
+    </url>
+    <url>
+        <loc>https://naqa92-portfolio-projects.github.io/talos-docs/en/decisions/004-retour-hetzner/</loc>
+        <lastmod>2026-10-12</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://naqa92-portfolio-projects.github.io/talos-docs/en/decisions/004-retour-hetzner/"/>
+        <xhtml:link rel="alternate" hreflang="fr" href="https://naqa92-portfolio-projects.github.io/talos-docs/decisions/004-retour-hetzner/"/>
+    </url>
+    <url>
+        <loc>https://naqa92-portfolio-projects.github.io/talos-docs/en/decisions/005-argocd-flux-argocd/</loc>
+        <lastmod>2026-10-12</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://naqa92-portfolio-projects.github.io/talos-docs/en/decisions/005-argocd-flux-argocd/"/>
+        <xhtml:link rel="alternate" hreflang="fr" href="https://naqa92-portfolio-projects.github.io/talos-docs/decisions/005-argocd-flux-argocd/"/>
+    </url>
+    <url>
+        <loc>https://naqa92-portfolio-projects.github.io/talos-docs/en/decisions/006-app-of-apps-sync-waves/</loc>
+        <lastmod>2026-10-12</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://naqa92-portfolio-projects.github.io/talos-docs/en/decisions/006-app-of-apps-sync-waves/"/>
+        <xhtml:link rel="alternate" hreflang="fr" href="https://naqa92-portfolio-projects.github.io/talos-docs/decisions/006-app-of-apps-sync-waves/"/>
+    </url>
+    <url>
+        <loc>https://naqa92-portfolio-projects.github.io/talos-docs/en/decisions/007-crossplane-api-self-service/</loc>
+        <lastmod>2026-10-12</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://naqa92-portfolio-projects.github.io/talos-docs/en/decisions/007-crossplane-api-self-service/"/>
+        <xhtml:link rel="alternate" hreflang="fr" href="https://naqa92-portfolio-projects.github.io/talos-docs/decisions/007-crossplane-api-self-service/"/>
+    </url>
+    <url>
+        <loc>https://naqa92-portfolio-projects.github.io/talos-docs/en/decisions/008-gateway-api-cilium/</loc>
+        <lastmod>2026-10-12</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://naqa92-portfolio-projects.github.io/talos-docs/en/decisions/008-gateway-api-cilium/"/>
+        <xhtml:link rel="alternate" hreflang="fr" href="https://naqa92-portfolio-projects.github.io/talos-docs/decisions/008-gateway-api-cilium/"/>
+    </url>
+    <url>
+        <loc>https://naqa92-portfolio-projects.github.io/talos-docs/en/decisions/009-secrets-infisical-eso/</loc>
+        <lastmod>2026-10-12</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://naqa92-portfolio-projects.github.io/talos-docs/en/decisions/009-secrets-infisical-eso/"/>
+        <xhtml:link rel="alternate" hreflang="fr" href="https://naqa92-portfolio-projects.github.io/talos-docs/decisions/009-secrets-infisical-eso/"/>
+    </url>
+    <url>
+        <loc>https://naqa92-portfolio-projects.github.io/talos-docs/en/decisions/010-kyverno-audit-garde-fous/</loc>
+        <lastmod>2026-10-12</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://naqa92-portfolio-projects.github.io/talos-docs/en/decisions/010-kyverno-audit-garde-fous/"/>
+        <xhtml:link rel="alternate" hreflang="fr" href="https://naqa92-portfolio-projects.github.io/talos-docs/decisions/010-kyverno-audit-garde-fous/"/>
+    </url>
+    <url>
+        <loc>https://naqa92-portfolio-projects.github.io/talos-docs/en/decisions/011-retrait-obi-sdk-otel/</loc>
+        <lastmod>2026-10-12</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://naqa92-portfolio-projects.github.io/talos-docs/en/decisions/011-retrait-obi-sdk-otel/"/>
+        <xhtml:link rel="alternate" hreflang="fr" href="https://naqa92-portfolio-projects.github.io/talos-docs/decisions/011-retrait-obi-sdk-otel/"/>
+    </url>
+    <url>
+        <loc>https://naqa92-portfolio-projects.github.io/talos-docs/en/decisions/012-pas-de-rendered-manifests/</loc>
+        <lastmod>2026-10-12</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://naqa92-portfolio-projects.github.io/talos-docs/en/decisions/012-pas-de-rendered-manifests/"/>
+        <xhtml:link rel="alternate" hreflang="fr" href="https://naqa92-portfolio-projects.github.io/talos-docs/decisions/012-pas-de-rendered-manifests/"/>
+    </url>
+    <url>
+        <loc>https://naqa92-portfolio-projects.github.io/talos-docs/en/projets/sre-agent/</loc>
+        <lastmod>2026-10-12</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://naqa92-portfolio-projects.github.io/talos-docs/en/projets/sre-agent/"/>
+        <xhtml:link rel="alternate" hreflang="fr" href="https://naqa92-portfolio-projects.github.io/talos-docs/projets/sre-agent/"/>
+    </url>
+    <url>
+        <loc>https://naqa92-portfolio-projects.github.io/talos-docs/en/projets/talos-argocd/</loc>
+        <lastmod>2026-10-12</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://naqa92-portfolio-projects.github.io/talos-docs/en/projets/talos-argocd/"/>
+        <xhtml:link rel="alternate" hreflang="fr" href="https://naqa92-portfolio-projects.github.io/talos-docs/projets/talos-argocd/"/>
+    </url>
+    <url>
+        <loc>https://naqa92-portfolio-projects.github.io/talos-docs/en/projets/talos-backstage/</loc>
+        <lastmod>2026-10-12</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://naqa92-portfolio-projects.github.io/talos-docs/en/projets/talos-backstage/"/>
+        <xhtml:link rel="alternate" hreflang="fr" href="https://naqa92-portfolio-projects.github.io/talos-docs/projets/talos-backstage/"/>
+    </url>
+    <url>
+        <loc>https://naqa92-portfolio-projects.github.io/talos-docs/en/projets/talos-fluxcd/</loc>
+        <lastmod>2026-10-12</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://naqa92-portfolio-projects.github.io/talos-docs/en/projets/talos-fluxcd/"/>
+        <xhtml:link rel="alternate" hreflang="fr" href="https://naqa92-portfolio-projects.github.io/talos-docs/projets/talos-fluxcd/"/>
+    </url>
+    <url>
+        <loc>https://naqa92-portfolio-projects.github.io/talos-docs/en/projets/talos-infra/</loc>
+        <lastmod>2026-10-12</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://naqa92-portfolio-projects.github.io/talos-docs/en/projets/talos-infra/"/>
+        <xhtml:link rel="alternate" hreflang="fr" href="https://naqa92-portfolio-projects.github.io/talos-docs/projets/talos-infra/"/>
+    </url>
+    <url>
+        <loc>https://naqa92-portfolio-projects.github.io/talos-docs/en/projets/talos-landing/</loc>
+        <lastmod>2026-10-12</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://naqa92-portfolio-projects.github.io/talos-docs/en/projets/talos-landing/"/>
+        <xhtml:link rel="alternate" hreflang="fr" href="https://naqa92-portfolio-projects.github.io/talos-docs/projets/talos-landing/"/>
+    </url>
+</urlset>
