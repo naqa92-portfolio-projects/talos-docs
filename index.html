@@ -1375,13 +1375,13 @@ Ce site publie le <strong>pourquoi</strong> : les décisions, leurs coûts, ce q
   seule, métriques, logs), puis propose un correctif sous forme de pull request. → <a href="projets/sre-agent/">sre-agent</a></li>
 </ul>
 <h2 id="ce-que-ce-projet-montre-surtout">Ce que ce projet montre surtout<a class="headerlink" href="#ce-que-ce-projet-montre-surtout" title="Permanent link">#</a></h2>
-<p>Des <strong>décisions défendues, puis remises en cause sur mesure</strong>. Le projet a changé deux fois d'outil
-GitOps et trois fois d'hébergeur. Chaque changement s'appuie sur une mesure, et un des retours en
-arrière a montré que la panne d'origine avait été mal attribuée. C'est la partie la plus utile à lire :</p>
+<p>Des <strong>décisions défendues, puis remises en cause sur mesure</strong>. La plateforme a été reconstruite sur
+trois hébergeurs et deux outils GitOps sans réécrire les applications. Chaque bascule s'appuie sur une
+mesure, et chaque retour en arrière sur une preuve A/B. C'est la partie la plus utile à lire :</p>
 <ul>
-<li><a href="decisions/005-argocd-flux-argocd/">ArgoCD → Flux → ArgoCD : un bug mal attribué</a></li>
+<li><a href="decisions/005-argocd-flux-argocd/">ArgoCD → Flux → ArgoCD : tester une meilleure architecture, revenir au standard du marché</a></li>
 <li><a href="decisions/004-retour-hetzner/">Hetzner → Infomaniak → Scaleway → Hetzner</a></li>
-<li><a href="incidents/#prune-saveit">L'incident où une migration a détruit une base de données, restaurée sans perte</a></li>
+<li><a href="incidents/#prune-saveit">Un incident de migration contenu par un garde-fou et restauré sans perte de données</a></li>
 </ul>
 <h2 id="parcours-de-lecture">Parcours de lecture<a class="headerlink" href="#parcours-de-lecture" title="Permanent link">#</a></h2>
 <div class="tabbed-set tabbed-alternate" data-tabs="1:3"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><input id="__tabbed_1_3" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">2 minutes</label><label for="__tabbed_1_2">10 minutes</label><label for="__tabbed_1_3">Préparer un entretien technique</label></div>

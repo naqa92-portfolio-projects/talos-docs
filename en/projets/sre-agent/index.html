@@ -724,7 +724,7 @@
   <span class="md-ellipsis">
     
   
-    011 · Remove the eBPF instrumentation in favor of the OpenTelemetry SDK
+    011 · Remove eBPF instrumentation in favor of the OpenTelemetry SDK
   
 
     
@@ -1079,10 +1079,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#limits" class="md-nav__link">
+  <a href="#next-steps" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Limits
+        Next steps
       
     </span>
   </a>
@@ -1248,10 +1248,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#limits" class="md-nav__link">
+  <a href="#next-steps" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Limits
+        Next steps
       
     </span>
   </a>
@@ -1281,7 +1281,7 @@
 <h1 id="sre-agent-the-llm-driven-sre-agent">sre-agent: the LLM-driven SRE agent<a class="headerlink" href="#sre-agent-the-llm-driven-sre-agent" title="Permanent link">#</a></h1>
 <blockquote>
 <p><strong>A Kubernetes controller detects a failure, an LLM agent investigates with read-only tools,
-then proposes a fix, by pull request when the resource is managed through GitOps.</strong></p>
+then proposes a fix, through a pull request when the resource is managed by GitOps.</strong></p>
 </blockquote>
 <table>
 <thead>
@@ -1294,6 +1294,10 @@ then proposes a fix, by pull request when the resource is managed through GitOps
 <tr>
 <td>Role</td>
 <td>Automatic failure diagnosis, remediation under human control</td>
+</tr>
+<tr>
+<td>Status</td>
+<td><strong>In development</strong>, deployed in manual mode</td>
 </tr>
 <tr>
 <td>Tools</td>
@@ -1313,12 +1317,12 @@ then proposes a fix, by pull request when the resource is managed through GitOps
     participant O as Metrics / Logs / Traces
     participant S as Slack / GitHub
     K-&gt;&gt;C: Event (e.g. CrashLoopBackOff)
-    C-&gt;&gt;C: 4 filters: repetition, rate,&lt;br/&gt;cooldown, still failing?
+    C-&gt;&gt;C: 4 filters: repetition, rate,&lt;br/&gt;cool-down, still failing?
     C-&gt;&gt;A: Investigation request
     A-&gt;&gt;K: kubectl get / describe / logs (read)
     A-&gt;&gt;O: Observability queries
-    A-&gt;&gt;A: Analysis, fix validated with a dry run
-    A-&gt;&gt;S: Report + proposed choices&lt;br/&gt;or GitOps pull request</code></pre>
+    A-&gt;&gt;A: Analysis, fix validated with a dry-run
+    A-&gt;&gt;S: Report + proposed options&lt;br/&gt;or GitOps pull request</code></pre>
 <h2 id="notable-choices">Notable choices<a class="headerlink" href="#notable-choices" title="Permanent link">#</a></h2>
 <table>
 <thead>
@@ -1338,19 +1342,19 @@ then proposes a fix, by pull request when the resource is managed through GitOps
 </tr>
 <tr>
 <td><strong>Four filters on the controller side</strong> before calling the LLM</td>
-<td>A flapping failure must not trigger an investigation on every event</td>
+<td>A flapping failure should not trigger an investigation on every event</td>
 </tr>
 <tr>
-<td><strong>Fix validated server-side with a dry run</strong> (<code>--dry-run=server</code>) before being proposed</td>
+<td><strong>Fix validated server-side with a dry-run</strong> (<code>--dry-run=server</code>) before being proposed</td>
 <td>Only propose what the Kubernetes API would accept</td>
 </tr>
 <tr>
-<td><strong>The official VictoriaMetrics MCP servers</strong> rather than rewriting tools</td>
+<td><strong>VictoriaMetrics' official MCP servers</strong> rather than rewriting tools</td>
 <td>Less code; the agent is an MCP client of observability</td>
 </tr>
 <tr>
 <td><strong>Several LLM providers</strong> behind a single model table</td>
-<td>Being able to change model without touching the code</td>
+<td>Being able to switch models without touching code</td>
 </tr>
 <tr>
 <td><strong>Shared token rather than OAuth</strong></td>
@@ -1362,9 +1366,9 @@ then proposes a fix, by pull request when the resource is managed through GitOps
 <p>The project carries a slice of an existing open source project (<em>dot-ai</em>). A first attempt had
 diverged too far from upstream and was abandoned. Lesson: re-read the upstream code at every decision.
 About 170 tests (Vitest on the TypeScript side, Ginkgo / envtest on the Go side).</p>
-<h2 id="limits">Limits<a class="headerlink" href="#limits" title="Permanent link">#</a></h2>
-<p>See <a href="../../limites/#chantiers-ouverts">Known limits</a>: the agent's least privilege is the
-next work item, before any automatic mode.</p>
+<h2 id="next-steps">Next steps<a class="headerlink" href="#next-steps" title="Permanent link">#</a></h2>
+<p>Tool-by-tool least-privilege hardening and a global LLM consumption budget, before any automatic
+mode. See the <a href="../../limites/#chantiers-ouverts">roadmap</a>.</p>
 
 
 

@@ -31,7 +31,7 @@
     
     
       
-        <title>011 · Remove the eBPF instrumentation in favor of the OpenTelemetry SDK - Taloslab</title>
+        <title>011 · Remove eBPF instrumentation in favor of the OpenTelemetry SDK - Taloslab</title>
       
     
     
@@ -82,7 +82,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#011-remove-the-ebpf-instrumentation-in-favor-of-the-opentelemetry-sdk" class="md-skip">
+        <a href="#011-remove-ebpf-instrumentation-in-favor-of-the-opentelemetry-sdk" class="md-skip">
           Skip to content
         </a>
       
@@ -118,7 +118,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              011 · Remove the eBPF instrumentation in favor of the OpenTelemetry SDK
+              011 · Remove eBPF instrumentation in favor of the OpenTelemetry SDK
             
           </span>
         </div>
@@ -735,7 +735,7 @@
   <span class="md-ellipsis">
     
   
-    011 · Remove the eBPF instrumentation in favor of the OpenTelemetry SDK
+    011 · Remove eBPF instrumentation in favor of the OpenTelemetry SDK
   
 
     
@@ -753,7 +753,7 @@
   <span class="md-ellipsis">
     
   
-    011 · Remove the eBPF instrumentation in favor of the OpenTelemetry SDK
+    011 · Remove eBPF instrumentation in favor of the OpenTelemetry SDK
   
 
     
@@ -790,10 +790,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#what-it-broke" class="md-nav__link">
+  <a href="#what-i-measured" class="md-nav__link">
     <span class="md-ellipsis">
       
-        What it broke
+        What I measured
       
     </span>
   </a>
@@ -1237,10 +1237,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#what-it-broke" class="md-nav__link">
+  <a href="#what-i-measured" class="md-nav__link">
     <span class="md-ellipsis">
       
-        What it broke
+        What I measured
       
     </span>
   </a>
@@ -1300,10 +1300,10 @@
   
 
 
-<h1 id="011-remove-the-ebpf-instrumentation-in-favor-of-the-opentelemetry-sdk">011 · Remove the eBPF instrumentation in favor of the OpenTelemetry SDK<a class="headerlink" href="#011-remove-the-ebpf-instrumentation-in-favor-of-the-opentelemetry-sdk" title="Permanent link">#</a></h1>
+<h1 id="011-remove-ebpf-instrumentation-in-favor-of-the-opentelemetry-sdk">011 · Remove eBPF instrumentation in favor of the OpenTelemetry SDK<a class="headerlink" href="#011-remove-ebpf-instrumentation-in-favor-of-the-opentelemetry-sdk" title="Permanent link">#</a></h1>
 <blockquote>
-<p><strong>In one sentence:</strong> the "no code changes" instrumentation had been corrupting processes for seven
-months; for a single application whose code I control, the SDK does better, with no privilege.</p>
+<p><strong>In one sentence:</strong> "no code change" eBPF instrumentation turned out to be intrusive; for an
+application whose code I control, the OpenTelemetry SDK does better, with no privileges.</p>
 </blockquote>
 <table>
 <thead>
@@ -1323,15 +1323,14 @@ months; for a single application whose code I control, the SDK does better, with
 </table>
 <h2 id="context">Context<a class="headerlink" href="#context" title="Permanent link">#</a></h2>
 <p>OBI (OpenTelemetry eBPF Instrumentation) traces applications without modifying their images: a
-privileged DaemonSet places probes in processes. Adopted in February 2026, it initially covered
+privileged DaemonSet places probes inside processes. Adopted in February 2026, it initially covered
 all namespaces.</p>
-<h2 id="what-it-broke">What it broke<a class="headerlink" href="#what-it-broke" title="Permanent link">#</a></h2>
+<h2 id="what-i-measured">What I measured<a class="headerlink" href="#what-i-measured" title="Permanent link">#</a></h2>
 <ul>
-<li>Pipe reads of instrumented processes were corrupted. Effect <strong>proven</strong> on the
-  PostgreSQL backups: excluding the pod was enough to restore them.</li>
-<li>The same signature weighed on two migrations (<a href="../005-argocd-flux-argocd/">005</a>,
-  <a href="../004-retour-hetzner/">004</a>), after being blamed in turn on barman, the Talos kernel and the
-  CloudNativePG plugin.</li>
+<li>The eBPF probes disrupted pipe reads in the instrumented processes. I <strong>proved</strong> it with an
+  A/B on the PostgreSQL backups: excluding the pod from instrumentation was enough to restore them.</li>
+<li>The symptom looked like bugs in other components (ArgoCD, Talos kernel, CloudNativePG plugin):
+  a privileged DaemonSet writing into process memory clouds every diagnosis.</li>
 <li>About 350 Mi of memory per node to trace a single Django application.</li>
 </ul>
 <h2 id="decision">Decision<a class="headerlink" href="#decision" title="Permanent link">#</a></h2>
@@ -1339,12 +1338,12 @@ all namespaces.</p>
 worker spans, and a <code>trace_id</code> in every log emitted under a span. Traces go to VictoriaTraces,
 metrics to VictoriaMetrics.</p>
 <h2 id="trade-offs-and-cost">Trade-offs and cost<a class="headerlink" href="#trade-offs-and-cost" title="Permanent link">#</a></h2>
-<p>The code has to be modified to trace. The "zero modification" argument only holds for third-party
+<p>Code has to be modified to trace. The "zero modification" argument only holds for third-party
 applications, and there are none here.</p>
 <h2 id="what-i-take-from-it">What I take from it<a class="headerlink" href="#what-i-take-from-it" title="Permanent link">#</a></h2>
-<p>Before removing OBI, each suspicion was A/B tested: one proven (PostgreSQL), two not
+<p>Before removing OBI, every suspicion was tested with an A/B: one proven (PostgreSQL), two not
 reproduced (ArgoCD, Authentik). An 863-line workaround put in place for Authentik turned out to be
-useless and was removed, with proof.</p>
+unnecessary and was removed, with evidence.</p>
 
 
 

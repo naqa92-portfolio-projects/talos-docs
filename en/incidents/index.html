@@ -724,7 +724,7 @@
   <span class="md-ellipsis">
     
   
-    011 · Remove the eBPF instrumentation in favor of the OpenTelemetry SDK
+    011 · Remove eBPF instrumentation in favor of the OpenTelemetry SDK
   
 
     
@@ -843,7 +843,7 @@
   <a href="#prune-saveit" class="md-nav__link">
     <span class="md-ellipsis">
       
-        A GitOps migration destroyed a database
+        A GitOps migration that triggered a deletion, restored with no loss
       
     </span>
   </a>
@@ -873,10 +873,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#a-bug-blamed-on-the-wrong-component-for-seven-months" class="md-nav__link">
+  <a href="#an-impossible-bug-tracked-down-to-its-real-cause" class="md-nav__link">
     <span class="md-ellipsis">
       
-        A bug blamed on the wrong component for seven months
+        An "impossible" bug, tracked down to its real cause
       
     </span>
   </a>
@@ -917,10 +917,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#velero-backups-refused-by-backblaze-b2" class="md-nav__link">
+  <a href="#velero-backups-rejected-by-backblaze-b2" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Velero backups refused by Backblaze B2
+        Velero backups rejected by Backblaze B2
       
     </span>
   </a>
@@ -1271,7 +1271,7 @@
   <a href="#prune-saveit" class="md-nav__link">
     <span class="md-ellipsis">
       
-        A GitOps migration destroyed a database
+        A GitOps migration that triggered a deletion, restored with no loss
       
     </span>
   </a>
@@ -1301,10 +1301,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#a-bug-blamed-on-the-wrong-component-for-seven-months" class="md-nav__link">
+  <a href="#an-impossible-bug-tracked-down-to-its-real-cause" class="md-nav__link">
     <span class="md-ellipsis">
       
-        A bug blamed on the wrong component for seven months
+        An "impossible" bug, tracked down to its real cause
       
     </span>
   </a>
@@ -1345,10 +1345,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#velero-backups-refused-by-backblaze-b2" class="md-nav__link">
+  <a href="#velero-backups-rejected-by-backblaze-b2" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Velero backups refused by Backblaze B2
+        Velero backups rejected by Backblaze B2
       
     </span>
   </a>
@@ -1387,42 +1387,45 @@
 
 
 <h1 id="what-broke">What broke<a class="headerlink" href="#what-broke" title="Permanent link">#</a></h1>
-<p>Failures are the most instructive part of the project. Each one follows the same format: <strong>symptom →
+<p>Outages are the most instructive part of the project. Each one follows the same format: <strong>symptom →
 cause → fix → lesson</strong>.</p>
-<h2 id="prune-saveit">A GitOps migration destroyed a database<a class="headerlink" href="#prune-saveit" title="Permanent link">#</a></h2>
-<p><strong>Symptom.</strong> While removing Kustomize from the GitOps repo (15 September 2026), two application
-namespaces went into <code>Terminating</code>. The saveit application's PostgreSQL cluster and its two
-volumes were deleted.</p>
+<h2 id="prune-saveit">A GitOps migration that triggered a deletion, restored with no loss<a class="headerlink" href="#prune-saveit" title="Permanent link">#</a></h2>
+<p><strong>Context.</strong> While removing Kustomize from the GitOps repo, ArgoCD deleted (<em>pruned</em>) the
+resources of two applications, including their PostgreSQL database.</p>
 <p><strong>Cause.</strong> Between the merge of a commit and the application of an Application's new definition,
-ArgoCD runs the <strong>old</strong> definition on the <strong>new</strong> files. The old one could only read the folder through
-its Kustomize file, which had just been deleted. ArgoCD then read the folder
-in non-recursive mode, found almost nothing, and deleted the rest (<em>prune</em>). The <code>prune: false</code>
-added in the same commit protected nothing: it only took effect with the new definition.</p>
-<p><strong>Fix.</strong> Point-in-time recovery (PITR) from the PostgreSQL logs archived on B2:
-<strong>no data loss</strong>, since the archive chain was continuous up to six seconds after the deletion
-started. A Kyverno policy refused the deletion of Crossplane resources and stopped
-the cascade.</p>
-<p>Three days earlier, a first attempt at the same work had already caused a database to be deleted because of a
-misunderstood file pattern. That attempt had been rolled back.</p>
-<p><strong>Lessons.</strong></p>
+ArgoCD runs the <strong>old</strong> definition against the <strong>new</strong> files. The old one could only read the
+folder through its Kustomize file, which had just been deleted. ArgoCD read the folder in
+non-recursive mode, found almost nothing, and removed the rest. The <code>prune: false</code> added in the
+same commit could not protect anything: it only took effect with the new definition.</p>
+<p><strong>What worked.</strong></p>
+<ul>
+<li><strong>Guardrail</strong>: the Kyverno policy that protects data refused the deletion of the Crossplane
+  resources and stopped the cascade.</li>
+<li><strong>Restore</strong>: point-in-time recovery (PITR) from the PostgreSQL logs continuously archived to B2,
+  using the scripted procedure already exercised during cluster rebuilds.
+  <strong>No data loss</strong>: the archive chain covered up to six seconds after the deletion began.</li>
+</ul>
+<p><strong>What I changed afterwards.</strong></p>
 <ol>
-<li>When a change touches both a definition and the content it reads, it needs <strong>two
+<li>A change that touches both a definition and the content it reads is made in <strong>two
    commits</strong>: first the definition, verified on the cluster, then the content.</li>
-<li>A protection written in the commit that creates the risk does not protect that commit.</li>
-<li>A render diff in CI compares <strong>final</strong> states: it does not see the transition window.</li>
-<li>A blocking rule on data deletion is worth more than ten audit rules.</li>
-<li>A backup is only as good as its restore. The procedure was scripted and had already been used
-   two days earlier, during the cluster rebuild.</li>
+<li>A CI check now verifies that every Application explicitly declares its read mode,
+   and forbids Kustomize files from coming back.</li>
+<li>A migration is judged on pod creation time, not only on <code>Healthy</code> / <code>Synced</code>.</li>
 </ol>
+<p><strong>What it shows.</strong> A protection written in the commit that creates the risk does not cover that commit,
+and a render diff in CI cannot see the transition window, since it compares final states.
+Defense in depth (admission guardrail + continuous backup + rehearsed restore) did
+its job.</p>
 <h2 id="fenetre-migration">A "Healthy" component rendered with its default values<a class="headerlink" href="#fenetre-migration" title="Permanent link">#</a></h2>
-<p><strong>Symptom.</strong> The same day, on another piece of work, the Gatus availability probe was recreated without
-its configuration, without its volumes and with the default service account, while ArgoCD showed it
-<code>Healthy</code> and <code>Synced</code> the whole time.</p>
+<p><strong>Symptom.</strong> While evaluating another pattern, the Gatus availability probe was recreated
+without its configuration, without its volumes and with the default service account, while ArgoCD
+showed it as <code>Healthy</code> and <code>Synced</code> throughout.</p>
 <p><strong>Cause.</strong> The same transition window: the old definition read a restructured values file
-and recognized nothing in it. <strong>A render with default values is a valid render</strong>, so there was
+and no longer recognized anything in it. <strong>A render with default values is a valid render</strong>, so
 no error.</p>
 <p><strong>Fix.</strong> Rolled back in about a minute.</p>
-<p><strong>Lesson.</strong> Judge a migration by the pods' creation date, never by <code>Healthy</code> / <code>Synced</code> alone.</p>
+<p><strong>Lesson.</strong> Judge a migration on pod creation time, never on <code>Healthy</code> / <code>Synced</code> alone.</p>
 <h2 id="the-control-plane-saturated-with-no-memory-alert">The control plane saturated with no memory alert<a class="headerlink" href="#the-control-plane-saturated-with-no-memory-alert" title="Permanent link">#</a></h2>
 <p><strong>Symptom.</strong> At cluster startup, the Gateway became unreachable, and the controller-manager, the
 scheduler and the GitOps controllers restarted in a chain.</p>
@@ -1431,15 +1434,15 @@ Health probes timed out. No classic memory signal fired.</p>
 <p><strong>Fix.</strong> Move to 4 vCPU (<code>cx33</code>): 28% CPU, no more restarts, +€3.60/month.</p>
 <p><strong>Lesson.</strong> Size for the startup peak, and watch control plane CPU before
 memory. → <a href="../decisions/002-control-plane-unique/">Decision 002</a></p>
-<h2 id="a-bug-blamed-on-the-wrong-component-for-seven-months">A bug blamed on the wrong component for seven months<a class="headerlink" href="#a-bug-blamed-on-the-wrong-component-for-seven-months" title="Permanent link">#</a></h2>
+<h2 id="an-impossible-bug-tracked-down-to-its-real-cause">An "impossible" bug, tracked down to its real cause<a class="headerlink" href="#an-impossible-bug-tracked-down-to-its-real-cause" title="Permanent link">#</a></h2>
 <p><strong>Symptom.</strong> Subprocesses read null bytes instead of their output: ArgoCD (<code>git
 fetch</code>), PostgreSQL backups, Velero.</p>
-<p><strong>Cause.</strong> The OBI eBPF instrumentation, which places probes in processes. The effect was proven on
-PostgreSQL. The problem had first been blamed on ArgoCD, the Talos kernel, barman and the
-CloudNativePG plugin.</p>
-<p><strong>Fix.</strong> OBI removed, instrumentation through the OpenTelemetry SDK.</p>
+<p><strong>Cause.</strong> The OBI eBPF instrumentation, which places probes inside processes. I proved it with an A/B
+test on PostgreSQL: excluding the pod from instrumentation was enough to restore backups. The symptom
+first pointed to ArgoCD, the Talos kernel or the CloudNativePG plugin.</p>
+<p><strong>Fix.</strong> Remove OBI, instrument with the OpenTelemetry SDK instead.</p>
 <p><strong>Lesson.</strong> A component that modifies other processes is suspect by default, and every suspicion is
-A/B tested before acting. → <a href="../decisions/005-argocd-flux-argocd/">Decisions 005</a> and
+tested with an A/B before acting. → <a href="../decisions/005-argocd-flux-argocd/">Decisions 005</a> and
 <a href="../decisions/011-retrait-obi-sdk-otel/">011</a></p>
 <h2 id="the-managed-control-plane-that-was-too-slow">The managed control plane that was too slow<a class="headerlink" href="#the-managed-control-plane-that-was-too-slow" title="Permanent link">#</a></h2>
 <p><strong>Symptom.</strong> On Scaleway Kapsule, GitOps converged poorly on a cluster of only 56 pods.</p>
@@ -1450,25 +1453,25 @@ nowhere in the documentation.</p>
 <h2 id="argocd-coupe-api">ArgoCD cut itself off from the API<a class="headerlink" href="#argocd-coupe-api" title="Permanent link">#</a></h2>
 <p><strong>Symptom.</strong> At startup, ArgoCD stopped applying anything, and everything that talks to the Kubernetes API
 went down with it.</p>
-<p><strong>Cause.</strong> At equal rank, ArgoCD applies resources in alphabetical order. A network
-authorization policy came before the <em>default-deny</em> policy that contained the API access. ArgoCD
+<p><strong>Cause.</strong> Within the same wave, ArgoCD applies resources in alphabetical order. A network
+allow policy came before the <em>default-deny</em> policy that contained the API access. ArgoCD
 lost the API before it could apply the rule that gave it back.</p>
 <p><strong>Fix.</strong> The <em>default-deny</em> policy is applied in the very first wave.</p>
-<p><strong>Lesson.</strong> Flux applied everything in one pass and hid the flaw. A tool change reveals implicit
-dependencies.</p>
+<p><strong>Lesson.</strong> Flux applied everything in a single pass and hid the flaw. Changing tools reveals
+implicit dependencies.</p>
 <h2 id="intermittent-404s-on-argocd">Intermittent 404s on ArgoCD<a class="headerlink" href="#intermittent-404s-on-argocd" title="Permanent link">#</a></h2>
-<p><strong>Cause.</strong> Under a <em>wildcard</em> certificate, HTTP/2 reuses a connection opened for another host
+<p><strong>Cause.</strong> Under a <em>wildcard</em> certificate, HTTP/2 reuses an open connection for another host
 (<em>connection coalescing</em>). Requests landed on a TLS chain that had no route to
 ArgoCD.</p>
 <p><strong>Fix.</strong> ArgoCD went back to standard TLS termination, which a recent Cilium option
 made possible.</p>
-<h2 id="velero-backups-refused-by-backblaze-b2">Velero backups refused by Backblaze B2<a class="headerlink" href="#velero-backups-refused-by-backblaze-b2" title="Permanent link">#</a></h2>
-<p><strong>Cause.</strong> Velero's AWS plugin always sends a <em>tagging</em> header that B2 refuses. The header is
+<h2 id="velero-backups-rejected-by-backblaze-b2">Velero backups rejected by Backblaze B2<a class="headerlink" href="#velero-backups-rejected-by-backblaze-b2" title="Permanent link">#</a></h2>
+<p><strong>Cause.</strong> Velero's AWS plugin always sends a <em>tagging</em> header that B2 rejects. The header is
 signed: it cannot be removed downstream without breaking the signature.</p>
-<p><strong>Fix.</strong> A signing proxy that removes the header and then re-signs the request. The upstream fix
+<p><strong>Fix.</strong> A signing proxy that strips the header and re-signs the request. The upstream fix
 is merged but not yet released. The exit condition is written down: remove the proxy as soon as a
 release contains it.</p>
-<p><strong>Lesson.</strong> Every workaround is recorded in a register with its upstream cause, its link and its
+<p><strong>Lesson.</strong> Every workaround is logged in a register with its upstream cause, its link and its
 exit condition. Without an exit condition, a workaround is not documented, it is buried.</p>
 <h2 id="other-workarounds-kept-up-to-date">Other workarounds kept up to date<a class="headerlink" href="#other-workarounds-kept-up-to-date" title="Permanent link">#</a></h2>
 <table>
@@ -1482,13 +1485,13 @@ exit condition. Without an exit condition, a workaround is not documented, it is
 <tbody>
 <tr>
 <td>Authentik</td>
-<td>The default shared memory (64 Mi) fills up, causing 502s</td>
+<td>The default shared memory (64 Mi) saturates, causing 502s</td>
 <td>256 Mi memory volume mounted on <code>/dev/shm</code></td>
 </tr>
 <tr>
 <td>Backstage</td>
 <td>OIDC discovery is only attempted at startup, with no retry</td>
-<td>An init container waits until Authentik responds</td>
+<td>An init container waits for Authentik to respond</td>
 </tr>
 <tr>
 <td>n8n</td>
@@ -1502,8 +1505,8 @@ exit condition. Without an exit condition, a workaround is not documented, it is
 </tr>
 <tr>
 <td>Let's Encrypt</td>
-<td>Quota of 5 certificates per week, used up by rebuilds</td>
-<td>Certificates backed up before destruction, re-injected on rebuild</td>
+<td>Quota of 5 certificates per week, exhausted by rebuilds</td>
+<td>Certificates backed up before destruction, reinjected on rebuild</td>
 </tr>
 </tbody>
 </table>

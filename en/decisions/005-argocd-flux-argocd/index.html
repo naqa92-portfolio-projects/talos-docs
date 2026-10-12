@@ -611,10 +611,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#context" class="md-nav__link">
+  <a href="#why-i-tested-flux" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Context
+        Why I tested Flux
       
     </span>
   </a>
@@ -622,10 +622,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#what-changed-the-diagnosis" class="md-nav__link">
+  <a href="#what-four-months-of-flux-taught-me" class="md-nav__link">
     <span class="md-ellipsis">
       
-        What changed the diagnosis
+        What four months of Flux taught me
       
     </span>
   </a>
@@ -633,10 +633,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#the-proof-before-going-back" class="md-nav__link">
+  <a href="#why-i-went-back-to-argocd" class="md-nav__link">
     <span class="md-ellipsis">
       
-        The proof before going back
+        Why I went back to ArgoCD
       
     </span>
   </a>
@@ -839,7 +839,7 @@
   <span class="md-ellipsis">
     
   
-    011 · Remove the eBPF instrumentation in favor of the OpenTelemetry SDK
+    011 · Remove eBPF instrumentation in favor of the OpenTelemetry SDK
   
 
     
@@ -1237,10 +1237,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#context" class="md-nav__link">
+  <a href="#why-i-tested-flux" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Context
+        Why I tested Flux
       
     </span>
   </a>
@@ -1248,10 +1248,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#what-changed-the-diagnosis" class="md-nav__link">
+  <a href="#what-four-months-of-flux-taught-me" class="md-nav__link">
     <span class="md-ellipsis">
       
-        What changed the diagnosis
+        What four months of Flux taught me
       
     </span>
   </a>
@@ -1259,10 +1259,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#the-proof-before-going-back" class="md-nav__link">
+  <a href="#why-i-went-back-to-argocd" class="md-nav__link">
     <span class="md-ellipsis">
       
-        The proof before going back
+        Why I went back to ArgoCD
       
     </span>
   </a>
@@ -1324,9 +1324,9 @@
 
 <h1 id="005-argocd-flux-argocd">005 · ArgoCD → Flux → ArgoCD<a class="headerlink" href="#005-argocd-flux-argocd" title="Permanent link">#</a></h1>
 <blockquote>
-<p><strong>In one sentence:</strong> I left ArgoCD because of a bug I had blamed on ArgoCD; four months
-later, the same signature appeared elsewhere, proven to come from another component, and I
-went back to ArgoCD after an A/B proof.</p>
+<p><strong>In one sentence:</strong> I tested Flux in real conditions for four months. Its architecture is
+better, but ArgoCD is the market standard, and the outage that had pushed me to leave
+turned out to be unrelated to ArgoCD: I switched back.</p>
 </blockquote>
 <table>
 <thead>
@@ -1344,48 +1344,48 @@ went back to ArgoCD after an A/B proof.</p>
 </tr>
 </tbody>
 </table>
-<h2 id="context">Context<a class="headerlink" href="#context" title="Permanent link">#</a></h2>
-<p>In spring 2026, the ArgoCD component that reads Git (<code>repo-server</code>) failed chronically at
-cluster startup (<code>git fetch exit 128</code>, output filled with null bytes). Four stacked
-workarounds were not enough. A Flux PoC on the same cluster gave <strong>0 errors</strong>, against 16 on the
-ArgoCD side. I migrated.</p>
-<h2 id="what-changed-the-diagnosis">What changed the diagnosis<a class="headerlink" href="#what-changed-the-diagnosis" title="Permanent link">#</a></h2>
+<h2 id="why-i-tested-flux">Why I tested Flux<a class="headerlink" href="#why-i-tested-flux" title="Permanent link">#</a></h2>
+<p>Two reasons, arriving at the same time:</p>
 <ol>
-<li>The same signature (null bytes in a subprocess's output) was <strong>proven</strong> on the
-   PostgreSQL backups to be an effect of the OBI eBPF instrumentation. Excluding the OBI pod
-   was enough to make the backup pass. And OBI was also instrumenting ArgoCD's namespace for
-   the whole life of the bug.</li>
-<li>Under Flux, Velero showed the same signature: changing GitOps tool had not removed the
-   problem.</li>
+<li><strong>The release of the <a href="https://fluxoperator.dev/web-ui/">Flux Operator Web UI</a>.</strong> The lack of a
+   UI was the main criticism of Flux against ArgoCD. A built-in UI, with OIDC SSO
+   and a delivery pipeline graph, removed that argument. It was the time to compare the two
+   tools on a real cluster.</li>
+<li><strong>A recurring outage on the ArgoCD side.</strong> The component that reads Git (<code>repo-server</code>) failed at
+   cluster startup (<code>git fetch exit 128</code>). A Flux PoC on the same cluster gave 0 errors,
+   against 16 on the ArgoCD side.</li>
 </ol>
-<h2 id="the-proof-before-going-back">The proof before going back<a class="headerlink" href="#the-proof-before-going-back" title="Permanent link">#</a></h2>
-<p>Dedicated bench, uprobes verified before each measurement window: <strong>334 instrumented <code>git fetch</code>,
-0 errors</strong>. Then, in production, 0 occurrences over more than 40,000 log lines, across five full
-startups.</p>
-<p><strong>Scope of the result, without overstating it:</strong> the bench had neither the same ArgoCD version nor the same
-kernel as the incident. The OBI cause is very likely, but neither proven nor ruled out for the
-historical incident.</p>
+<h2 id="what-four-months-of-flux-taught-me">What four months of Flux taught me<a class="headerlink" href="#what-four-months-of-flux-taught-me" title="Permanent link">#</a></h2>
+<p><strong>Flux has the better architecture.</strong> Specialized controllers (sources, Kustomize, Helm) rather than
+a central server. Native dependencies between components (<code>dependsOn</code> + <code>wait</code>), CEL health
+checks, and the application of a component in a single pass.</p>
+<p><strong>But it is harder to pick up.</strong> There are more objects to understand, state is spread
+across several controllers, and debugging goes through the CLI more than through an overview.</p>
+<h2 id="why-i-went-back-to-argocd">Why I went back to ArgoCD<a class="headerlink" href="#why-i-went-back-to-argocd" title="Permanent link">#</a></h2>
+<ol>
+<li><strong>The market.</strong> ArgoCD is the most requested GitOps engine in platform teams. Mastering it
+   in depth (ordering, Application health, render diff in CI) is worth more for my
+   engagements.</li>
+<li><strong>The outage was not ArgoCD's.</strong> The same signature (null bytes in a subprocess's output)
+   appeared on other components. I isolated it with an A/B: it came from the OBI eBPF
+   instrumentation (<a href="../011-retrait-obi-sdk-otel/">decision 011</a>). Before switching back, I ran another proof on a
+   dedicated bench: <strong>334 instrumented <code>git fetch</code>, 0 errors</strong>. Then, in production, 0 occurrences over more than
+   40,000 log lines, across five full startups.</li>
+</ol>
 <h2 id="decision">Decision<a class="headerlink" href="#decision" title="Permanent link">#</a></h2>
-<p>Back to ArgoCD. This is not a <em>revert</em>: the repo was rewritten, this time with an explicit
-startup ordering (<a href="../006-app-of-apps-sync-waves/">decision 006</a>). Its absence also explained part of
-the initial load.</p>
-<p>Why go back rather than stay on Flux: <strong>this bug was the only reason for leaving</strong>. The argument
-"Flux launches no subprocess" had never been a need, only a property noticed
-after the fact. With the reason gone, the decision went too. The ArgoCD building blocks already built could be
-reused: SSO, render diff in CI (<code>argocd-diff-preview</code>), Backstage plugin.</p>
+<p>Back to ArgoCD. This is not a <em>revert</em>: the repo was rewritten, and it takes over what Flux did
+better. Startup ordering becomes explicit (<a href="../006-app-of-apps-sync-waves/">decision 006</a>),
+and health checks written in Lua replace Flux's CEL ones.</p>
 <h2 id="trade-offs-and-cost">Trade-offs and cost<a class="headerlink" href="#trade-offs-and-cost" title="Permanent link">#</a></h2>
 <ul>
-<li>ArgoCD has no <code>dependsOn</code> between Applications, unlike Flux. It needed waves and a
-  health check written in Lua.</li>
-<li>Four months on a tool chosen for the wrong reason, and two full migrations.</li>
+<li>ArgoCD has no <code>dependsOn</code> between Applications: it took waves and a Lua health check.</li>
+<li>Two complete GitOps migrations. Both were absorbed without touching the applications.</li>
 </ul>
 <h2 id="what-i-take-from-it">What I take from it<a class="headerlink" href="#what-i-take-from-it" title="Permanent link">#</a></h2>
 <ul>
-<li><strong>An eBPF component is a default suspect</strong> in any "impossible" diagnosis on a pod it
-  instruments. It is limited per workload, never to a whole namespace.</li>
-<li><strong>A suspect is not a culprit.</strong> An unmeasured attribution costs as much as the bug.</li>
-<li>I planned a graduated fallback in case the cause came back, and I forbade myself from putting the
-  old workarounds back.</li>
+<li>Comparing two tools on a real cluster teaches more than a feature matrix.</li>
+<li>A component that instruments other processes is a default suspect in any "impossible"
+  diagnosis. Every suspicion is verified with an A/B before acting.</li>
 </ul>
 
 

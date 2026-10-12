@@ -724,7 +724,7 @@
   <span class="md-ellipsis">
     
   
-    011 · Remove the eBPF instrumentation in favor of the OpenTelemetry SDK
+    011 · Remove eBPF instrumentation in favor of the OpenTelemetry SDK
   
 
     
@@ -881,7 +881,7 @@
   <a href="#chantiers-ouverts" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Open work items
+        Roadmap
       
     </span>
   </a>
@@ -1216,7 +1216,7 @@
   <a href="#chantiers-ouverts" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Open work items
+        Roadmap
       
     </span>
   </a>
@@ -1255,8 +1255,8 @@
 
 
 <h1 id="known-limits">Known limits<a class="headerlink" href="#known-limits" title="Permanent link">#</a></h1>
-<p>What the platform does not do, or does not do yet. Some limits are costed choices, others
-are open work items.</p>
+<p>What the platform does not do, or does not do yet. Most are costed choices; the rest form the
+roadmap.</p>
 <h2 id="deliberate-choices">Deliberate choices<a class="headerlink" href="#deliberate-choices" title="Permanent link">#</a></h2>
 <table>
 <thead>
@@ -1273,8 +1273,8 @@ are open work items.</p>
 <td>Third-party users or an availability commitment</td>
 </tr>
 <tr>
-<td>Kyverno best practices in audit, not blocking</td>
-<td>Only one person deploys (<a href="../decisions/010-kyverno-audit-garde-fous/">010</a>)</td>
+<td>Kyverno best practices in audit, not enforcement</td>
+<td>A single person deploys (<a href="../decisions/010-kyverno-audit-garde-fous/">010</a>)</td>
 <td>A second team on the cluster</td>
 </tr>
 <tr>
@@ -1283,41 +1283,37 @@ are open work items.</p>
 <td>Several contributors, or risky production releases</td>
 </tr>
 <tr>
-<td>Dependency on SaaS (Infisical, Cloudflare, Backblaze B2, GitHub)</td>
+<td>Dependence on SaaS (Infisical, Cloudflare, Backblaze B2, GitHub)</td>
 <td>Nothing to operate, free tiers are enough</td>
 <td>A sovereignty or network isolation requirement</td>
 </tr>
 <tr>
-<td>Terraform CI runs <em>plan</em> only, triggered by hand</td>
-<td>The admin API is filtered to the administrator's IP: a CI runner would always show up as drift there</td>
-<td>A list of allowed static IPs</td>
+<td>Terraform CI runs <em>plan</em> only, triggered manually</td>
+<td>The admin API is filtered to the administrator's IP: a CI runner would always show up as drift</td>
+<td>A list of static allowed IPs</td>
 </tr>
 <tr>
 <td>Default alert rules follow their upstream repo</td>
 <td>Freezing them would mean copying the chart's list, which would drift in turn</td>
-<td>An alert threshold changed upstream that causes problems</td>
+<td>An upstream-modified alert threshold that causes problems</td>
 </tr>
 </tbody>
 </table>
-<h2 id="chantiers-ouverts">Open work items<a class="headerlink" href="#chantiers-ouverts" title="Permanent link">#</a></h2>
+<h2 id="chantiers-ouverts">Roadmap<a class="headerlink" href="#chantiers-ouverts" title="Permanent link">#</a></h2>
 <ul>
-<li><strong>SRE agent: least privilege.</strong> In production, the agent only notifies and proposes pull
-  requests (manual mode). Its rights in the cluster remain broader than this mode requires, and there is
-  no global LLM consumption budget yet. A full audit listed the fixes to
-  make. This is the next step before any automatic mode.</li>
-<li><strong>CI lint for Backstage.</strong> It is run locally before each push. The CI job exists as a comment,
-  to be re-enabled as soon as there is a second contributor.</li>
-<li><strong>Application tests for the landing page.</strong> Route tests only; reading the Kubernetes API
-  is not covered.</li>
-<li><strong>A PostgreSQL backup plugin still installed from a raw manifest.</strong> The official Helm chart
-  now exists: the migration is ready to do.</li>
+<li><strong>SRE agent (in development).</strong> It runs in manual mode: it investigates, notifies and proposes
+  pull requests, and a human decides. Before considering an automatic mode: tool-by-tool least-privilege
+  hardening, and a global LLM consumption budget.</li>
+<li><strong>Lint in CI for Backstage.</strong> Run locally before every push; the CI job is ready, to be enabled as soon
+  as a second contributor arrives.</li>
+<li><strong>Move the PostgreSQL backup plugin to its official Helm chart</strong>, now available.</li>
 </ul>
 <h2 id="what-i-would-do-with-a-team">What I would do with a team<a class="headerlink" href="#what-i-would-do-with-a-team" title="Permanent link">#</a></h2>
 <ul>
-<li>Switch the Kyverno policies to blocking, rule by rule, with a prior audit period.</li>
+<li>Switch the Kyverno policies to enforcement, rule by rule, with a prior audit period.</li>
 <li>Add a pre-production environment and an explicit promotion between environments.</li>
 <li>Put access to the SRE agent behind a per-user identity (OAuth) rather than a shared token.</li>
-<li>Federate LLM calls behind a gateway (budgets, switching between providers) as soon as a
+<li>Federate LLM calls behind a gateway (budgets, provider failover) as soon as a
   second consumer exists.</li>
 </ul>
 

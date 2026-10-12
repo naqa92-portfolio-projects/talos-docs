@@ -616,10 +616,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#alternatives-rejected" class="md-nav__link">
+  <a href="#rejected-alternatives" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Alternatives rejected
+        Rejected alternatives
       
     </span>
   </a>
@@ -828,7 +828,7 @@
   <span class="md-ellipsis">
     
   
-    011 · Remove the eBPF instrumentation in favor of the OpenTelemetry SDK
+    011 · Remove eBPF instrumentation in favor of the OpenTelemetry SDK
   
 
     
@@ -1259,10 +1259,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#alternatives-rejected" class="md-nav__link">
+  <a href="#rejected-alternatives" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Alternatives rejected
+        Rejected alternatives
       
     </span>
   </a>
@@ -1302,9 +1302,9 @@
 
 <h1 id="004-hetzner-infomaniak-scaleway-hetzner">004 · Hetzner → Infomaniak → Scaleway → Hetzner<a class="headerlink" href="#004-hetzner-infomaniak-scaleway-hetzner" title="Permanent link">#</a></h1>
 <blockquote>
-<p><strong>In one sentence:</strong> I left Hetzner for a managed Kubernetes to cut cost and eliminate
-a bug, then came back because the free managed offers gave out on the reliability of their
-control plane.</p>
+<p><strong>In one sentence:</strong> I left Hetzner for managed Kubernetes to cut cost and eliminate
+a bug, then came back because the free managed offerings gave out on control plane
+reliability.</p>
 </blockquote>
 <table>
 <thead>
@@ -1350,25 +1350,25 @@ control plane.</p>
 <tr>
 <td>2026-09-12</td>
 <td><strong>Back to Hetzner</strong>, 1 control plane + 2 workers</td>
-<td>Scaleway disqualified in one day: <strong>0.73 s per etcd request</strong> on the shared control plane, with only 56 pods. The <code>cx33</code> type was available again at Hetzner</td>
+<td>Scaleway ruled out in a day: <strong>0.73 s per etcd request</strong> on the shared control plane, with only 56 pods. The <code>cx33</code> type was available again at Hetzner</td>
 </tr>
 </tbody>
 </table>
 <h2 id="decision">Decision<a class="headerlink" href="#decision" title="Permanent link">#</a></h2>
-<p>Back to "homemade" on Hetzner, this time with a dedicated control plane and two workers. I keep
-control of the OS and the network (Cilium with Gateway API, which a managed offer did not let me configure
-fully).</p>
+<p>Back to self-managed on Hetzner, this time with a dedicated control plane and two workers. I keep
+control of the OS and the network (Cilium with Gateway API, which a managed offering did not let me
+configure fully).</p>
 <h2 id="what-these-migrations-taught-me">What these migrations taught me<a class="headerlink" href="#what-these-migrations-taught-me" title="Permanent link">#</a></h2>
 <ul>
-<li><strong>On a managed control plane, measure etcd latency before migrating GitOps.</strong> The advertised
+<li><strong>On a managed control plane, measure etcd latency before migrating the GitOps.</strong> The advertised
   limits (RAM, node count) were never reached: it was the undocumented latency that
   gave out.</li>
 <li><strong>Server type availability changes without notice.</strong> At Hetzner, <code>cx43</code>/<code>cx53</code> disappeared
-  and <code>cx33</code> went through three states in one hour. Availability must be checked at each <code>apply</code>.</li>
-<li><strong>The "Talos bug" was not one.</strong> It came from the eBPF instrumentation (see
-  <a href="../011-retrait-obi-sdk-otel/">decision 011</a>). An unmeasured attribution weighed on a migration.</li>
+  and <code>cx33</code> went through three states in an hour. Availability is checked at every <code>apply</code>.</li>
+<li><strong>The "Talos bug" was not one.</strong> It came from the eBPF instrumentation, which I eventually
+  isolated with an A/B (see <a href="../011-retrait-obi-sdk-otel/">decision 011</a>).</li>
 </ul>
-<h2 id="alternatives-rejected">Alternatives rejected<a class="headerlink" href="#alternatives-rejected" title="Permanent link">#</a></h2>
+<h2 id="rejected-alternatives">Rejected alternatives<a class="headerlink" href="#rejected-alternatives" title="Permanent link">#</a></h2>
 <table>
 <thead>
 <tr>
@@ -1379,11 +1379,11 @@ fully).</p>
 <tbody>
 <tr>
 <td>Stay on Infomaniak</td>
-<td>Recurring API timeouts, incompatible with a cluster that is often recreated</td>
+<td>Recurring API timeouts, incompatible with a frequently recreated cluster</td>
 </tr>
 <tr>
 <td>Scaleway Kapsule</td>
-<td>Etcd latency on the shared control plane; Cilium's Gateway API cannot be enabled (operator configuration out of reach)</td>
+<td>etcd latency of the shared control plane; Cilium's Gateway API cannot be enabled (operator configuration out of reach)</td>
 </tr>
 <tr>
 <td>ARM at Hetzner (<code>cax31</code>)</td>
@@ -1392,9 +1392,9 @@ fully).</p>
 </tbody>
 </table>
 <h2 id="trade-offs-and-cost">Trade-offs and cost<a class="headerlink" href="#trade-offs-and-cost" title="Permanent link">#</a></h2>
-<p>Three migrations in two months. Each one was run like a project, with a PRD (design document), milestones and an
-end measurement, and GitOps made it possible to rebuild the platform each time. Current cost:
-<strong>€41.36/month</strong>.</p>
+<p>Three switches in two months, each run as a project: PRD, milestones, closing measurement. It is also
+the best proof of the platform's portability: Terraform + GitOps rebuilt it
+identically on three providers. Current cost: <strong>€41.36/month</strong>.</p>
 
 
 

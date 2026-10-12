@@ -1315,9 +1315,9 @@ ou Kyverno en audit, et je sais dire ce qui changerait avec une équipe.</p>
 </details>
 <details class="question">
 <summary>Qu'est-ce que tu referais différemment ?</summary>
-<p>Mesurer avant d'attribuer. J'ai changé d'outil GitOps à cause d'un bug que j'avais attribué à
-ArgoCD, alors qu'il venait de l'instrumentation eBPF. Et sur un Kubernetes managé, mesurer la
-latence etcd avant de migrer, pas après.</p>
+<p>Sur un Kubernetes managé, mesurer la latence etcd dès le premier jour, avant de migrer le GitOps.
+Et isoler plus tôt les composants qui instrumentent d'autres processus : une sonde eBPF peut imiter
+le bug d'un autre outil.</p>
 </details>
 <h2 id="infrastructure">Infrastructure<a class="headerlink" href="#infrastructure" title="Permanent link">#</a></h2>
 <details class="question">
@@ -1347,9 +1347,10 @@ tombe à 28 %, pour 3,60 € de plus par mois.</p>
 <h2 id="gitops">GitOps<a class="headerlink" href="#gitops" title="Permanent link">#</a></h2>
 <details class="question">
 <summary>Pourquoi ArgoCD ? Tu étais passé sur Flux.</summary>
-<p>Je suis passé sur Flux pour fuir un bug. Quand la même signature est apparue sur d'autres composants,
-prouvée comme venant de l'instrumentation eBPF, la raison du départ est tombée. J'ai refait une
-preuve A/B (334 <code>git fetch</code>, 0 erreur) avant de revenir. → <a href="../decisions/005-argocd-flux-argocd/">005</a></p>
+<p>J'ai testé Flux quatre mois, au moment de la sortie de la Web UI de Flux Operator. Son architecture
+est meilleure, mais il est plus difficile à prendre en main, et ArgoCD reste le standard du marché.
+La panne qui avait accéléré le départ venait en fait d'une instrumentation eBPF : je l'ai vérifié
+par A/B (334 <code>git fetch</code>, 0 erreur) avant de revenir. → <a href="../decisions/005-argocd-flux-argocd/">005</a></p>
 </details>
 <details class="question">
 <summary>Comment gères-tu l'ordre de déploiement sans <code>dependsOn</code> ?</summary>
@@ -1359,10 +1360,11 @@ Lua, sans quoi les vagues n'attendent rien. → <a href="../decisions/006-app-of
 </details>
 <details class="question">
 <summary>Raconte-moi un incident.</summary>
-<p>Pendant une migration du dépôt GitOps, ArgoCD a fait tourner l'ancienne définition d'une Application
-sur les nouveaux fichiers et a supprimé une base PostgreSQL. Je l'ai restaurée sans perte grâce aux
-journaux archivés sur B2. Une politique Kyverno a arrêté la cascade. Leçon : séparer en deux commits
-le changement de définition et le changement de contenu. → <a href="../incidents/#prune-saveit">Incident</a></p>
+<p>Pendant une migration du dépôt GitOps, ArgoCD a appliqué l'ancienne définition d'une Application sur
+les nouveaux fichiers et a déclenché une suppression. La défense en profondeur a joué : la politique
+Kyverno a bloqué la cascade, et la base a été restaurée à la seconde près depuis les journaux
+archivés, sans perte de données. Depuis, ce type de changement se fait en deux commits, et un
+contrôle CI empêche la cause de revenir. → <a href="../incidents/#prune-saveit">Incident</a></p>
 </details>
 <details class="question">
 <summary>Pourquoi pas le Rendered Manifests Pattern ?</summary>
@@ -1398,9 +1400,9 @@ retrait d'une instrumentation eBPF qui corrompait des processus. → <a href="..
 <h2 id="agent-sre">Agent SRE<a class="headerlink" href="#agent-sre" title="Permanent link">#</a></h2>
 <details class="question">
 <summary>Tu laisses un LLM modifier ta production ?</summary>
-<p>Non. En production, l'agent enquête en lecture et propose. Un humain décide, et une ressource gérée
-en GitOps n'est corrigée que par pull request. Le prochain chantier, avant tout mode automatique, est
-de resserrer ses droits au strict nécessaire. → <a href="../projets/sre-agent/">sre-agent</a></p>
+<p>Non. L'agent, encore en développement, tourne en mode manuel : il enquête et propose, un humain
+décide, et une ressource gérée en GitOps n'est corrigée que par pull request. Un mode automatique
+ne viendra qu'après un durcissement du moindre privilège outil par outil. → <a href="../projets/sre-agent/">sre-agent</a></p>
 </details>
 <details class="question">
 <summary>Pourquoi ne pas utiliser kagent ou une passerelle LLM ?</summary>

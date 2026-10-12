@@ -724,7 +724,7 @@
   <span class="md-ellipsis">
     
   
-    011 · Remove the eBPF instrumentation in favor of the OpenTelemetry SDK
+    011 · Remove eBPF instrumentation in favor of the OpenTelemetry SDK
   
 
     
@@ -1283,8 +1283,9 @@
 </tbody>
 </table>
 <h2 id="why-it-existed">Why it existed<a class="headerlink" href="#why-it-existed" title="Permanent link">#</a></h2>
-<p>To escape a chronic bug blamed on ArgoCD. A PoC on the same cluster gave 0 errors under Flux,
-against 16 under ArgoCD. The bug actually came from another component: the whole story is in
+<p>To compare Flux and ArgoCD on a real cluster, just as the
+<a href="https://fluxoperator.dev/web-ui/">Flux Operator Web UI</a> removed the main criticism of Flux,
+the lack of a UI. A recurring outage on the ArgoCD side sped up the move. The whole story is in
 <a href="../../decisions/005-argocd-flux-argocd/">decision 005</a>.</p>
 <h2 id="what-flux-did-better-and-had-to-be-rebuilt-under-argocd">What Flux did better, and had to be rebuilt under ArgoCD<a class="headerlink" href="#what-flux-did-better-and-had-to-be-rebuilt-under-argocd" title="Permanent link">#</a></h2>
 <table>
@@ -1297,21 +1298,22 @@ against 16 under ArgoCD. The bug actually came from another component: the whole
 <tbody>
 <tr>
 <td><code>dependsOn</code> + <code>wait</code> between components</td>
-<td>Ordered waves + health check in Lua (<a href="../../decisions/006-app-of-apps-sync-waves/">006</a>)</td>
+<td>Ordered waves + Lua health check (<a href="../../decisions/006-app-of-apps-sync-waves/">006</a>)</td>
 </tr>
 <tr>
-<td>Health checks in CEL</td>
+<td>CEL health checks</td>
 <td>Lua health scripts for Crossplane resources</td>
 </tr>
 <tr>
-<td>Applied in a single pass</td>
+<td>Application in a single pass</td>
 <td>Explicit order, which revealed a hidden dependency between network policies (<a href="../../incidents/#argocd-coupe-api">incident</a>)</td>
 </tr>
 </tbody>
 </table>
 <h2 id="what-i-take-from-it">What I take from it<a class="headerlink" href="#what-i-take-from-it" title="Permanent link">#</a></h2>
-<p>Changing tool did not remove the problem: the same signature reappeared under Flux, on Velero.
-That is what put the diagnosis back in question.</p>
+<p>Flux has the better architecture, but it is more demanding to pick up. ArgoCD remains the market
+standard, hence the return. And the outage followed the cluster under Flux, which made it possible to find its
+real cause, unrelated to either tool.</p>
 
 
 

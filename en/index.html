@@ -383,10 +383,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#what-this-project-mainly-shows" class="md-nav__link">
+  <a href="#what-this-project-mostly-shows" class="md-nav__link">
     <span class="md-ellipsis">
       
-        What this project mainly shows
+        What this project mostly shows
       
     </span>
   </a>
@@ -824,7 +824,7 @@
   <span class="md-ellipsis">
     
   
-    011 · Remove the eBPF instrumentation in favor of the OpenTelemetry SDK
+    011 · Remove eBPF instrumentation in favor of the OpenTelemetry SDK
   
 
     
@@ -1255,10 +1255,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#what-this-project-mainly-shows" class="md-nav__link">
+  <a href="#what-this-project-mostly-shows" class="md-nav__link">
     <span class="md-ellipsis">
       
-        What this project mainly shows
+        What this project mostly shows
       
     </span>
   </a>
@@ -1297,15 +1297,15 @@
 
 
 <h1 id="taloslab">Taloslab<a class="headerlink" href="#taloslab" title="Permanent link">#</a></h1>
-<p><strong>A complete Kubernetes platform, built and run solo, on Hetzner servers at €41/month:
-from bare servers to the developer portal, including security, backups, observability
+<p><strong>A complete Kubernetes platform, built and operated solo, on €41/month Hetzner servers:
+from bare servers up to the developer portal, including security, backups, observability
 and an LLM-driven SRE agent.</strong></p>
-<p>The goal is not to host an application. It is to reproduce, at small scale, what a platform
-team provides to developers: <em>"fill in a form, and your application is online with its
-database, its DNS, its TLS certificate, its secrets and its dashboards."</em></p>
+<p>The goal is not to host an application, but to reproduce at small scale what a platform
+team provides to developers: <em>"fill in a form, your application is online with its
+database, DNS, TLS certificate, secrets and dashboards"</em>.</p>
 <div class="admonition info">
 <p class="admonition-title">The code is private, the reasoning is public</p>
-<p>The platform repositories are private; only the <a href="projets/talos-landing/">showcase</a> is public.
+<p>The platform repos are private; only the <a href="projets/talos-landing/">showcase</a> is public.
 This site publishes the <strong>why</strong>: the decisions, their costs, what broke. I show the code on request in interviews.</p>
 </div>
 <h2 id="at-a-glance">At a glance<a class="headerlink" href="#at-a-glance" title="Permanent link">#</a></h2>
@@ -1332,7 +1332,7 @@ This site publishes the <strong>why</strong>: the decisions, their costs, what b
 <tbody>
 <tr>
 <td>Monthly cost</td>
-<td><strong>€41.36</strong> incl. VAT (1 control plane + 2 <code>cx33</code> workers, load balancer, IPv4), volumes ~€7.50 extra</td>
+<td><strong>€41.36</strong> incl. VAT (1 control plane + 2 <code>cx33</code> workers, load balancer, IPv4), volumes ~€7.5 extra</td>
 </tr>
 <tr>
 <td>Platform components</td>
@@ -1344,7 +1344,7 @@ This site publishes the <strong>why</strong>: the decisions, their costs, what b
 </tr>
 <tr>
 <td>Network security</td>
-<td>Everything is denied by default (Cilium <em>default-deny</em>), each flow is opened explicitly</td>
+<td>Everything denied by default (Cilium <em>default-deny</em>), every flow opened explicitly</td>
 </tr>
 <tr>
 <td>Secrets in Git</td>
@@ -1362,11 +1362,11 @@ This site publishes the <strong>why</strong>: the decisions, their costs, what b
 </table>
 <h2 id="in-two-minutes">In two minutes<a class="headerlink" href="#in-two-minutes" title="Permanent link">#</a></h2>
 <ul>
-<li><strong>Infrastructure as Code end to end.</strong> Terraform creates the servers and installs Talos Linux, an immutable
-  OS with no SSH built for Kubernetes, then hands over to ArgoCD. → <a href="projets/talos-infra/">talos-infra</a></li>
-<li><strong>Strict GitOps.</strong> Everything running in the cluster is described in a Git repo; a manual change
-  is reverted within one to two minutes. → <a href="projets/talos-argocd/">talos-argocd</a></li>
-<li><strong>A homemade API for developers.</strong> With Crossplane, a 15-line file (<code>kind: App</code>) generates
+<li><strong>Infrastructure as Code end to end.</strong> Terraform creates the servers and installs Talos Linux, an
+  immutable, SSH-less OS built for Kubernetes, then hands over to ArgoCD. → <a href="projets/talos-infra/">talos-infra</a></li>
+<li><strong>Strict GitOps.</strong> Everything running in the cluster is described in a Git repo; a change
+  made by hand is reverted within a minute or two. → <a href="projets/talos-argocd/">talos-argocd</a></li>
+<li><strong>A home-grown API for developers.</strong> With Crossplane, a 15-line file (<code>kind: App</code>) generates
   about ten Kubernetes resources: deployment, HTTPS route, network policy, secrets, monitoring.
   → <a href="decisions/007-crossplane-api-self-service/">Decision 007</a></li>
 <li><strong>A developer portal.</strong> Backstage turns this API into forms, with SSO authentication
@@ -1374,17 +1374,17 @@ This site publishes the <strong>why</strong>: the decisions, their costs, what b
 <li><strong>An SRE agent.</strong> A Go controller detects failures and an LLM agent investigates (read-only kubectl,
   metrics, logs), then proposes a fix as a pull request. → <a href="projets/sre-agent/">sre-agent</a></li>
 </ul>
-<h2 id="what-this-project-mainly-shows">What this project mainly shows<a class="headerlink" href="#what-this-project-mainly-shows" title="Permanent link">#</a></h2>
-<p><strong>Decisions that are defended, then challenged against measurements.</strong> The project changed GitOps tool
-twice and hosting provider three times. Each change rests on a measurement, and one of the
-reversals showed that the original failure had been blamed on the wrong component. This is the most useful part to read:</p>
+<h2 id="what-this-project-mostly-shows">What this project mostly shows<a class="headerlink" href="#what-this-project-mostly-shows" title="Permanent link">#</a></h2>
+<p><strong>Defended decisions, then challenged with evidence.</strong> The platform was rebuilt across
+three hosting providers and two GitOps tools without rewriting the applications. Every switch rests on a
+measurement, and every rollback on an A/B proof. This is the most useful part to read:</p>
 <ul>
-<li><a href="decisions/005-argocd-flux-argocd/">ArgoCD → Flux → ArgoCD: a misattributed bug</a></li>
+<li><a href="decisions/005-argocd-flux-argocd/">ArgoCD → Flux → ArgoCD: testing a better architecture, coming back to the market standard</a></li>
 <li><a href="decisions/004-retour-hetzner/">Hetzner → Infomaniak → Scaleway → Hetzner</a></li>
-<li><a href="incidents/#prune-saveit">The incident where a migration destroyed a database, restored with no data loss</a></li>
+<li><a href="incidents/#prune-saveit">A migration incident contained by a guardrail and restored with no data loss</a></li>
 </ul>
 <h2 id="reading-paths">Reading paths<a class="headerlink" href="#reading-paths" title="Permanent link">#</a></h2>
-<div class="tabbed-set tabbed-alternate" data-tabs="1:3"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><input id="__tabbed_1_3" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">2 minutes</label><label for="__tabbed_1_2">10 minutes</label><label for="__tabbed_1_3">Preparing for a technical interview</label></div>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:3"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><input id="__tabbed_1_3" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">2 minutes</label><label for="__tabbed_1_2">10 minutes</label><label for="__tabbed_1_3">Preparing a technical interview</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
 <p>This page, then the <a href="decisions/">decisions table</a>.</p>
@@ -1394,7 +1394,7 @@ reversals showed that the original failure had been blamed on the wrong componen
 <a href="incidents/">What broke</a> → <a href="limites/">Known limits</a>.</p>
 </div>
 <div class="tabbed-block">
-<p><a href="faq/">Interview questions</a>: the likely "why X rather than Y" questions, with short
+<p><a href="faq/">Interview questions</a>: the likely "why X rather than Y", with short
 answers.</p>
 </div>
 </div>

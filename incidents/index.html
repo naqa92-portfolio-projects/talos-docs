@@ -843,7 +843,7 @@
   <a href="#prune-saveit" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Une migration GitOps a détruit une base de données
+        Une migration GitOps qui a déclenché une suppression, restaurée sans perte
       
     </span>
   </a>
@@ -873,10 +873,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#un-bug-attribue-au-mauvais-composant-pendant-sept-mois" class="md-nav__link">
+  <a href="#un-bug-impossible-traque-jusqua-sa-vraie-cause" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Un bug attribué au mauvais composant pendant sept mois
+        Un bug « impossible », traqué jusqu'à sa vraie cause
       
     </span>
   </a>
@@ -1271,7 +1271,7 @@
   <a href="#prune-saveit" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Une migration GitOps a détruit une base de données
+        Une migration GitOps qui a déclenché une suppression, restaurée sans perte
       
     </span>
   </a>
@@ -1301,10 +1301,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#un-bug-attribue-au-mauvais-composant-pendant-sept-mois" class="md-nav__link">
+  <a href="#un-bug-impossible-traque-jusqua-sa-vraie-cause" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Un bug attribué au mauvais composant pendant sept mois
+        Un bug « impossible », traqué jusqu'à sa vraie cause
       
     </span>
   </a>
@@ -1389,35 +1389,39 @@
 <h1 id="ce-qui-a-casse">Ce qui a cassé<a class="headerlink" href="#ce-qui-a-casse" title="Permanent link">#</a></h1>
 <p>Les pannes sont la partie la plus instructive du projet. Chacune suit le même format : <strong>symptôme →
 cause → correctif → leçon</strong>.</p>
-<h2 id="prune-saveit">Une migration GitOps a détruit une base de données<a class="headerlink" href="#prune-saveit" title="Permanent link">#</a></h2>
-<p><strong>Symptôme.</strong> Pendant le retrait de Kustomize du dépôt GitOps (15 septembre 2026), deux namespaces
-applicatifs sont passés en <code>Terminating</code>. Le cluster PostgreSQL de l'application saveit et ses deux
-volumes ont été supprimés.</p>
+<h2 id="prune-saveit">Une migration GitOps qui a déclenché une suppression, restaurée sans perte<a class="headerlink" href="#prune-saveit" title="Permanent link">#</a></h2>
+<p><strong>Contexte.</strong> Pendant le retrait de Kustomize du dépôt GitOps, ArgoCD a supprimé (<em>prune</em>) les
+ressources de deux applications, dont leur base PostgreSQL.</p>
 <p><strong>Cause.</strong> Entre le merge d'un commit et l'application de la nouvelle définition d'une Application,
 ArgoCD fait tourner l'<strong>ancienne</strong> définition sur les <strong>nouveaux</strong> fichiers. L'ancienne ne savait lire
-le dossier qu'à travers son fichier Kustomize, qui venait d'être supprimé. ArgoCD a alors lu le dossier
-en mode non récursif, n'y a trouvé presque rien, et a supprimé le reste (<em>prune</em>). Le <code>prune: false</code>
-ajouté dans le même commit ne protégeait rien : il ne prenait effet qu'avec la nouvelle définition.</p>
-<p><strong>Correctif.</strong> Restauration à un instant donné (PITR) depuis les journaux PostgreSQL archivés sur B2 :
-<strong>aucune perte de données</strong>, la chaîne d'archives étant continue jusqu'à six secondes après le début de
-la suppression. Une politique Kyverno a refusé la suppression des ressources Crossplane et arrêté la
-cascade.</p>
-<p>Trois jours plus tôt, un premier essai du même chantier avait déjà fait supprimer une base par un
-motif de fichiers mal compris. L'essai avait été annulé.</p>
-<p><strong>Leçons.</strong></p>
+le dossier qu'à travers son fichier Kustomize, qui venait d'être supprimé. ArgoCD a lu le dossier en
+mode non récursif, n'y a trouvé presque rien, et a retiré le reste. Le <code>prune: false</code> ajouté dans le
+même commit ne pouvait pas protéger : il ne prenait effet qu'avec la nouvelle définition.</p>
+<p><strong>Ce qui a fonctionné.</strong></p>
+<ul>
+<li><strong>Garde-fou</strong> : la politique Kyverno qui protège les données a refusé la suppression des ressources
+  Crossplane et arrêté la cascade.</li>
+<li><strong>Restauration</strong> : restauration à un instant donné (PITR) depuis les journaux PostgreSQL archivés en
+  continu sur B2, par la procédure scriptée déjà utilisée lors des reconstructions de cluster.
+  <strong>Aucune perte de données</strong> : la chaîne d'archives couvrait jusqu'à six secondes après le début de
+  la suppression.</li>
+</ul>
+<p><strong>Ce que j'ai changé ensuite.</strong></p>
 <ol>
-<li>Quand un changement touche à la fois une définition et le contenu qu'elle lit, il faut <strong>deux
+<li>Un changement qui touche à la fois une définition et le contenu qu'elle lit se fait en <strong>deux
    commits</strong> : d'abord la définition, vérifiée sur le cluster, ensuite le contenu.</li>
-<li>Une protection écrite dans le commit qui crée le risque ne protège pas ce commit.</li>
-<li>Un diff de rendu en CI compare des états <strong>finaux</strong> : il ne voit pas la fenêtre de transition.</li>
-<li>Une règle de blocage sur la suppression des données vaut plus que dix règles d'audit.</li>
-<li>Une sauvegarde ne vaut que par sa restauration. La procédure était scriptée et avait déjà servi
-   deux jours plus tôt, lors de la reconstruction du cluster.</li>
+<li>Un contrôle CI vérifie désormais que chaque Application déclare explicitement son mode de lecture,
+   et interdit le retour de fichiers Kustomize.</li>
+<li>Une migration se juge sur la date de création des pods, pas seulement sur <code>Healthy</code> / <code>Synced</code>.</li>
 </ol>
+<p><strong>Ce que ça montre.</strong> Une protection écrite dans le commit qui crée le risque ne couvre pas ce commit,
+et un diff de rendu en CI ne voit pas la fenêtre de transition, puisqu'il compare des états finaux.
+La défense en profondeur (garde-fou d'admission + sauvegarde continue + restauration répétée) a fait
+son travail.</p>
 <h2 id="fenetre-migration">Un composant « Healthy » rendu avec ses valeurs par défaut<a class="headerlink" href="#fenetre-migration" title="Permanent link">#</a></h2>
-<p><strong>Symptôme.</strong> Le même jour, sur un autre chantier, la sonde de disponibilité Gatus a été recréée sans
-sa configuration, sans ses volumes et avec le compte de service par défaut, alors qu'ArgoCD l'affichait
-<code>Healthy</code> et <code>Synced</code> du début à la fin.</p>
+<p><strong>Symptôme.</strong> Pendant l'évaluation d'un autre pattern, la sonde de disponibilité Gatus a été recréée
+sans sa configuration, sans ses volumes et avec le compte de service par défaut, alors qu'ArgoCD
+l'affichait <code>Healthy</code> et <code>Synced</code> du début à la fin.</p>
 <p><strong>Cause.</strong> La même fenêtre de transition : l'ancienne définition lisait un fichier de valeurs restructuré
 et n'y reconnaissait plus rien. <strong>Un rendu avec les valeurs par défaut est un rendu valide</strong>, donc
 aucune erreur.</p>
@@ -1431,12 +1435,12 @@ Les sondes de santé expiraient. Aucun signal mémoire classique ne s'est décle
 <p><strong>Correctif.</strong> Passage à 4 vCPU (<code>cx33</code>) : 28 % de CPU, plus aucun redémarrage, +3,60 €/mois.</p>
 <p><strong>Leçon.</strong> Dimensionner sur le pic de démarrage, et surveiller le CPU du control plane avant la
 mémoire. → <a href="../decisions/002-control-plane-unique/">Décision 002</a></p>
-<h2 id="un-bug-attribue-au-mauvais-composant-pendant-sept-mois">Un bug attribué au mauvais composant pendant sept mois<a class="headerlink" href="#un-bug-attribue-au-mauvais-composant-pendant-sept-mois" title="Permanent link">#</a></h2>
+<h2 id="un-bug-impossible-traque-jusqua-sa-vraie-cause">Un bug « impossible », traqué jusqu'à sa vraie cause<a class="headerlink" href="#un-bug-impossible-traque-jusqua-sa-vraie-cause" title="Permanent link">#</a></h2>
 <p><strong>Symptôme.</strong> Des sous-processus lisaient des octets nuls à la place de leur sortie : ArgoCD (<code>git
 fetch</code>), les sauvegardes PostgreSQL, Velero.</p>
-<p><strong>Cause.</strong> L'instrumentation eBPF OBI, qui pose des sondes dans les processus. L'effet a été prouvé sur
-PostgreSQL. Le problème avait d'abord été attribué à ArgoCD, au noyau Talos, à barman et au plugin
-CloudNativePG.</p>
+<p><strong>Cause.</strong> L'instrumentation eBPF OBI, qui pose des sondes dans les processus. Je l'ai prouvé par A/B
+sur PostgreSQL : exclure le pod de l'instrumentation suffisait à rétablir les sauvegardes. Le symptôme
+pointait d'abord vers ArgoCD, le noyau Talos ou le plugin CloudNativePG.</p>
 <p><strong>Correctif.</strong> Retrait d'OBI, instrumentation par le SDK OpenTelemetry.</p>
 <p><strong>Leçon.</strong> Un composant qui modifie d'autres processus est suspect par défaut, et chaque suspicion se
 teste en A/B avant d'agir. → <a href="../decisions/005-argocd-flux-argocd/">Décisions 005</a> et

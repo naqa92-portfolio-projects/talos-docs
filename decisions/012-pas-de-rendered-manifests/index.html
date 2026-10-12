@@ -1331,8 +1331,9 @@ montre exactement ce qui tourne. Le pattern est très recommandé dans la litté
    demandes ouvertes en amont.</li>
 <li><strong>Rendre en CI ne reproduit pas fidèlement le cluster</strong> : 17 charts sur 22 lisent les capacités réelles
    de l'API (<code>.Capabilities</code>), qu'une CI ne connaît pas, et 7 émettent des hooks Helm que le pattern perd.</li>
-<li><strong>La tentative a cassé la production.</strong> Pendant la migration, un composant a été rendu avec ses
-   valeurs par défaut tout en restant affiché <code>Healthy</code> (voir <a href="../../incidents/#fenetre-migration">incidents</a>).</li>
+<li><strong>La migration ouvre une fenêtre de risque par composant.</strong> Pendant l'essai, un composant a été rendu
+   avec ses valeurs par défaut tout en restant affiché <code>Healthy</code>. Repéré et annulé en une minute (voir
+   <a href="../../incidents/#fenetre-migration">incidents</a>).</li>
 </ol>
 <h2 id="decision">Décision<a class="headerlink" href="#decision" title="Permanent link">#</a></h2>
 <p><code>argocd-diff-preview</code> en CI : chaque PR reçoit en commentaire le diff des manifestes rendus des deux

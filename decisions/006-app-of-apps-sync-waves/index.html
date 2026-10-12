@@ -1341,10 +1341,10 @@ mis un cluster à genoux.</p>
 <ul>
 <li>Le démarrage à froid est sérialisé, donc plus lent qu'un démarrage parallèle, mais il converge seul
   (33/33 Applications au dernier démarrage complet).</li>
-<li>La découverte automatique a un revers : une erreur de chemin peut faire supprimer des ressources
-  (<em>prune</em>). C'est arrivé (<a href="../../incidents/#prune-saveit">incident</a>). Depuis, un contrôle CI vérifie
-  chaque Application, et une politique Kyverno bloque la suppression des ressources qui portent des
-  données.</li>
+<li>La découverte automatique a un revers : une erreur de chemin peut déclencher une suppression
+  (<em>prune</em>). C'est contenu à trois niveaux : un contrôle CI sur chaque Application, une politique
+  Kyverno qui bloque la suppression des ressources portant des données, et des sauvegardes continues
+  (<a href="../../incidents/#prune-saveit">incident maîtrisé</a>).</li>
 </ul>
 
 

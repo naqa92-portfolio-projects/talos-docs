@@ -661,10 +661,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#alternatives-rejected" class="md-nav__link">
+  <a href="#rejected-alternatives" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Alternatives rejected
+        Rejected alternatives
       
     </span>
   </a>
@@ -817,7 +817,7 @@
   <span class="md-ellipsis">
     
   
-    011 · Remove the eBPF instrumentation in favor of the OpenTelemetry SDK
+    011 · Remove eBPF instrumentation in favor of the OpenTelemetry SDK
   
 
     
@@ -1237,10 +1237,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#alternatives-rejected" class="md-nav__link">
+  <a href="#rejected-alternatives" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Alternatives rejected
+        Rejected alternatives
       
     </span>
   </a>
@@ -1302,19 +1302,19 @@ guaranteed by waves that wait for the previous wave to be healthy.</p>
 <h2 id="context">Context<a class="headerlink" href="#context" title="Permanent link">#</a></h2>
 <p>A platform has strict dependencies: an operator's types (CRDs) must exist before the
 resources that use them, and a certificate needs the Cloudflare secret, itself provided by
-External Secrets. On the first pass on ArgoCD, 26 syncs launched at the same time had
+External Secrets. During the first pass on ArgoCD, 26 syncs launched at the same time had
 brought a cluster to its knees.</p>
 <h2 id="decision">Decision<a class="headerlink" href="#decision" title="Permanent link">#</a></h2>
 <ul>
 <li><strong>A root Application</strong> recursively discovers every <code>application.yaml</code>. No central registry.</li>
-<li><strong>Waves</strong> (<code>sync-wave</code>): wave N+1 starts only once wave N is synced <strong>and</strong>
-  healthy. ArgoCD disabled health for child Applications by default: I restore it with a
-  Lua script, without which the waves wait for nothing.</li>
+<li><strong>Waves</strong> (<code>sync-wave</code>): wave N+1 only starts once wave N is synced <strong>and</strong>
+  healthy. ArgoCD disabled child Application health by default: I restore it with a Lua
+  script, without which the waves wait for nothing.</li>
 <li>The root <strong>manages itself</strong>: it is one of its own sources.</li>
 <li><strong>A single convention</strong>: <code>&lt;category&gt;/&lt;component&gt;/application.yaml</code> + <code>values.yaml</code> + <code>resources/</code>.
   No exceptions, no umbrella folder.</li>
 </ul>
-<h2 id="alternatives-rejected">Alternatives rejected<a class="headerlink" href="#alternatives-rejected" title="Permanent link">#</a></h2>
+<h2 id="rejected-alternatives">Rejected alternatives<a class="headerlink" href="#rejected-alternatives" title="Permanent link">#</a></h2>
 <table>
 <thead>
 <tr>
@@ -1325,7 +1325,7 @@ brought a cluster to its knees.</p>
 <tbody>
 <tr>
 <td>ApplicationSets</td>
-<td>More concurrency on Git operations (that was a factor in the bug in <a href="../005-argocd-flux-argocd/">decision 005</a>), and more indirect to read</td>
+<td>More concurrency on Git operations (a factor in the bug of <a href="../005-argocd-flux-argocd/">decision 005</a>), and more indirect to read</td>
 </tr>
 <tr>
 <td>Progressive Syncs (RollingSync)</td>
@@ -1339,12 +1339,12 @@ brought a cluster to its knees.</p>
 </table>
 <h2 id="trade-offs-and-cost">Trade-offs and cost<a class="headerlink" href="#trade-offs-and-cost" title="Permanent link">#</a></h2>
 <ul>
-<li>Cold start is serialized, so slower than a parallel start, but it converges by itself
+<li>Cold start is serialized, so slower than a parallel start, but it converges on its own
   (33/33 Applications at the last full startup).</li>
-<li>Automatic discovery has a downside: a path error can cause resources to be deleted
-  (<em>prune</em>). It happened (<a href="../../incidents/#prune-saveit">incident</a>). Since then, a CI check verifies
-  every Application, and a Kyverno policy blocks the deletion of resources that hold
-  data.</li>
+<li>Automatic discovery has a downside: a path error can trigger a deletion
+  (<em>prune</em>). This is contained at three levels: a CI check on every Application, a Kyverno
+  policy that blocks the deletion of resources carrying data, and continuous backups
+  (<a href="../../incidents/#prune-saveit">incident under control</a>).</li>
 </ul>
 
 

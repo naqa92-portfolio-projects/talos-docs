@@ -726,7 +726,7 @@
   <span class="md-ellipsis">
     
   
-    011 · Remove the eBPF instrumentation in favor of the OpenTelemetry SDK
+    011 · Remove eBPF instrumentation in favor of the OpenTelemetry SDK
   
 
     
@@ -1329,19 +1329,20 @@ shows exactly what is running. The pattern is highly recommended in the GitOps l
 <li><strong>ArgoCD's native implementation (Source Hydrator) cannot express this repo</strong>: 23 Applications
    out of 37 combine a remote chart, values and local manifests. Both gaps are open
    upstream requests.</li>
-<li><strong>Rendering in CI does not faithfully reproduce the cluster</strong>: 17 charts out of 22 read the real capabilities
-   of the API (<code>.Capabilities</code>), which a CI does not know, and 7 emit Helm hooks that the pattern loses.</li>
-<li><strong>The attempt broke production.</strong> During the migration, a component was rendered with its default
-   values while still displayed <code>Healthy</code> (see <a href="../../incidents/#fenetre-migration">incidents</a>).</li>
+<li><strong>Rendering in CI does not faithfully reproduce the cluster</strong>: 17 charts out of 22 read the real API
+   capabilities (<code>.Capabilities</code>), which a CI does not know, and 7 emit Helm hooks that the pattern loses.</li>
+<li><strong>The migration opens a risk window per component.</strong> During the trial, a component was rendered
+   with its default values while still showing <code>Healthy</code>. Spotted and rolled back in a minute (see
+   <a href="../../incidents/#fenetre-migration">incidents</a>).</li>
 </ol>
 <h2 id="decision">Decision<a class="headerlink" href="#decision" title="Permanent link">#</a></h2>
 <p><code>argocd-diff-preview</code> in CI: each PR receives as a comment the diff of the manifests rendered on both
-sides. It is the same information for the review, with no artifact to maintain.</p>
+sides. It is the same information for review, with no artifact to maintain.</p>
 <h2 id="trade-offs-and-cost">Trade-offs and cost<a class="headerlink" href="#trade-offs-and-cost" title="Permanent link">#</a></h2>
-<p>No Git history of the rendered manifests: you cannot <code>git blame</code> a final object.</p>
+<p>No Git history of rendered manifests: no <code>git blame</code> on a final object.</p>
 <h2 id="when-to-revisit">When to revisit<a class="headerlink" href="#when-to-revisit" title="Permanent link">#</a></h2>
-<p>If one day the history of rendered manifests is needed to find a regression, if a cold
-start fails for lack of access to the chart repos, or if the upstream requests are delivered.</p>
+<p>If the history of rendered manifests is ever needed to track down a regression, if a cold
+start fails for lack of access to chart repos, or if the upstream requests ship.</p>
 
 
 
@@ -1377,7 +1378,7 @@ start fails for lack of access to the chart repos, or if the upstream requests a
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
           
-          <a href="../011-retrait-obi-sdk-otel/" class="md-footer__link md-footer__link--prev" aria-label="Previous: 011 · Remove the eBPF instrumentation in favor of the OpenTelemetry SDK">
+          <a href="../011-retrait-obi-sdk-otel/" class="md-footer__link md-footer__link--prev" aria-label="Previous: 011 · Remove eBPF instrumentation in favor of the OpenTelemetry SDK">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
@@ -1387,7 +1388,7 @@ start fails for lack of access to the chart repos, or if the upstream requests a
                 Previous
               </span>
               <div class="md-ellipsis">
-                011 · Remove the eBPF instrumentation in favor of the OpenTelemetry SDK
+                011 · Remove eBPF instrumentation in favor of the OpenTelemetry SDK
               </div>
             </div>
           </a>

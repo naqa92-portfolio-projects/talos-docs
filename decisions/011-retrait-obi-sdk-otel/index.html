@@ -790,10 +790,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#ce-quil-a-casse" class="md-nav__link">
+  <a href="#ce-que-jai-mesure" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Ce qu'il a cassé
+        Ce que j'ai mesuré
       
     </span>
   </a>
@@ -1237,10 +1237,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#ce-quil-a-casse" class="md-nav__link">
+  <a href="#ce-que-jai-mesure" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Ce qu'il a cassé
+        Ce que j'ai mesuré
       
     </span>
   </a>
@@ -1302,8 +1302,8 @@
 
 <h1 id="011-retirer-linstrumentation-ebpf-au-profit-du-sdk-opentelemetry">011 · Retirer l'instrumentation eBPF au profit du SDK OpenTelemetry<a class="headerlink" href="#011-retirer-linstrumentation-ebpf-au-profit-du-sdk-opentelemetry" title="Permanent link">#</a></h1>
 <blockquote>
-<p><strong>En une phrase :</strong> l'instrumentation « sans toucher au code » corrompait des processus depuis sept
-mois ; pour une seule application dont je contrôle le code, le SDK fait mieux, sans privilège.</p>
+<p><strong>En une phrase :</strong> l'instrumentation eBPF « sans toucher au code » s'est révélée intrusive ; pour une
+application dont je contrôle le code, le SDK OpenTelemetry fait mieux, sans privilège.</p>
 </blockquote>
 <table>
 <thead>
@@ -1325,13 +1325,12 @@ mois ; pour une seule application dont je contrôle le code, le SDK fait mieux, 
 <p>OBI (OpenTelemetry eBPF Instrumentation) trace les applications sans modifier leurs images : un
 DaemonSet privilégié pose des sondes dans les processus. Adopté en février 2026, il couvrait au départ
 tous les namespaces.</p>
-<h2 id="ce-quil-a-casse">Ce qu'il a cassé<a class="headerlink" href="#ce-quil-a-casse" title="Permanent link">#</a></h2>
+<h2 id="ce-que-jai-mesure">Ce que j'ai mesuré<a class="headerlink" href="#ce-que-jai-mesure" title="Permanent link">#</a></h2>
 <ul>
-<li>Les lectures de pipe des processus instrumentés étaient corrompues. Effet <strong>prouvé</strong> sur les
-  sauvegardes PostgreSQL : exclure le pod suffisait à les rétablir.</li>
-<li>La même signature a pesé dans deux migrations (<a href="../005-argocd-flux-argocd/">005</a>,
-  <a href="../004-retour-hetzner/">004</a>), après avoir été attribuée tour à tour à barman, au noyau Talos et au
-  plugin CloudNativePG.</li>
+<li>Les sondes eBPF perturbaient les lectures de pipe des processus instrumentés. Je l'ai <strong>prouvé</strong> par
+  A/B sur les sauvegardes PostgreSQL : exclure le pod de l'instrumentation suffisait à les rétablir.</li>
+<li>Le symptôme ressemblait à des bugs d'autres composants (ArgoCD, noyau Talos, plugin CloudNativePG) :
+  un DaemonSet privilégié qui écrit dans la mémoire des processus brouille tous les diagnostics.</li>
 <li>Environ 350 Mi de mémoire par nœud pour tracer une seule application Django.</li>
 </ul>
 <h2 id="decision">Décision<a class="headerlink" href="#decision" title="Permanent link">#</a></h2>

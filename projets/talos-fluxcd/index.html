@@ -1283,9 +1283,10 @@
 </tbody>
 </table>
 <h2 id="pourquoi-il-a-existe">Pourquoi il a existé<a class="headerlink" href="#pourquoi-il-a-existe" title="Permanent link">#</a></h2>
-<p>Pour fuir un bug chronique attribué à ArgoCD. Un PoC sur le même cluster donnait 0 erreur sous Flux,
-contre 16 sous ArgoCD. Le bug venait en réalité d'un autre composant : toute l'histoire est dans la
-<a href="../../decisions/005-argocd-flux-argocd/">décision 005</a>.</p>
+<p>Pour comparer Flux et ArgoCD sur un vrai cluster, au moment où la
+<a href="https://fluxoperator.dev/web-ui/">Web UI de Flux Operator</a> levait le principal reproche fait à Flux,
+l'absence d'interface. Une panne récurrente côté ArgoCD a accéléré le passage. Toute l'histoire est dans
+la <a href="../../decisions/005-argocd-flux-argocd/">décision 005</a>.</p>
 <h2 id="ce-que-flux-faisait-mieux-et-quil-a-fallu-reconstruire-sous-argocd">Ce que Flux faisait mieux, et qu'il a fallu reconstruire sous ArgoCD<a class="headerlink" href="#ce-que-flux-faisait-mieux-et-quil-a-fallu-reconstruire-sous-argocd" title="Permanent link">#</a></h2>
 <table>
 <thead>
@@ -1310,8 +1311,9 @@ contre 16 sous ArgoCD. Le bug venait en réalité d'un autre composant : toute l
 </tbody>
 </table>
 <h2 id="ce-que-jen-retiens">Ce que j'en retiens<a class="headerlink" href="#ce-que-jen-retiens" title="Permanent link">#</a></h2>
-<p>Changer d'outil n'a pas supprimé le problème : la même signature est réapparue sous Flux, sur Velero.
-C'est ce qui a remis le diagnostic en cause.</p>
+<p>Flux a la meilleure architecture, mais il est plus exigeant à prendre en main. ArgoCD reste le standard
+du marché, d'où le retour. Et la panne a suivi le cluster sous Flux, ce qui a permis d'en trouver la
+vraie cause, étrangère aux deux outils.</p>
 
 
 

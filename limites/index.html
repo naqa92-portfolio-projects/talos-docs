@@ -881,7 +881,7 @@
   <a href="#chantiers-ouverts" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Chantiers ouverts
+        Feuille de route
       
     </span>
   </a>
@@ -1216,7 +1216,7 @@
   <a href="#chantiers-ouverts" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Chantiers ouverts
+        Feuille de route
       
     </span>
   </a>
@@ -1255,8 +1255,8 @@
 
 
 <h1 id="limites-connues">Limites connues<a class="headerlink" href="#limites-connues" title="Permanent link">#</a></h1>
-<p>Ce que la plateforme ne fait pas, ou pas encore. Certaines limites sont des choix chiffrés, d'autres
-sont des chantiers ouverts.</p>
+<p>Ce que la plateforme ne fait pas, ou pas encore. La plupart sont des choix chiffrés ; le reste forme la
+feuille de route.</p>
 <h2 id="choix-assumes">Choix assumés<a class="headerlink" href="#choix-assumes" title="Permanent link">#</a></h2>
 <table>
 <thead>
@@ -1299,18 +1299,14 @@ sont des chantiers ouverts.</p>
 </tr>
 </tbody>
 </table>
-<h2 id="chantiers-ouverts">Chantiers ouverts<a class="headerlink" href="#chantiers-ouverts" title="Permanent link">#</a></h2>
+<h2 id="chantiers-ouverts">Feuille de route<a class="headerlink" href="#chantiers-ouverts" title="Permanent link">#</a></h2>
 <ul>
-<li><strong>Agent SRE : moindre privilège.</strong> En production, l'agent ne fait que notifier et proposer des pull
-  requests (mode manuel). Ses droits dans le cluster restent plus larges que ce mode n'exige, et il
-  n'existe pas encore de budget global de consommation LLM. Un audit complet a listé les corrections à
-  faire. C'est la prochaine étape avant tout mode automatique.</li>
-<li><strong>Lint en CI pour Backstage.</strong> Il est lancé en local avant chaque push. Le job CI existe en commentaire,
-  à réactiver dès qu'il y aura un second contributeur.</li>
-<li><strong>Tests applicatifs de la page vitrine.</strong> Tests de routes seulement ; la lecture de l'API Kubernetes
-  n'est pas couverte.</li>
-<li><strong>Un plugin de sauvegarde PostgreSQL encore installé par manifeste brut.</strong> Le chart Helm officiel
-  existe désormais : la migration est prête à faire.</li>
+<li><strong>Agent SRE (en cours de développement).</strong> Il tourne en mode manuel : il enquête, notifie et propose
+  des pull requests, un humain décide. Avant d'envisager un mode automatique : durcissement du moindre
+  privilège outil par outil, et budget global de consommation LLM.</li>
+<li><strong>Lint en CI pour Backstage.</strong> Lancé en local avant chaque push ; le job CI est prêt, à activer dès
+  l'arrivée d'un second contributeur.</li>
+<li><strong>Passage du plugin de sauvegarde PostgreSQL sur son chart Helm officiel</strong>, désormais disponible.</li>
 </ul>
 <h2 id="ce-que-je-ferais-avec-une-equipe">Ce que je ferais avec une équipe<a class="headerlink" href="#ce-que-je-ferais-avec-une-equipe" title="Permanent link">#</a></h2>
 <ul>

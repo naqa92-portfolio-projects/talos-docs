@@ -726,7 +726,7 @@
   <span class="md-ellipsis">
     
   
-    011 · Remove the eBPF instrumentation in favor of the OpenTelemetry SDK
+    011 · Remove eBPF instrumentation in favor of the OpenTelemetry SDK
   
 
     
@@ -1124,10 +1124,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#what-was-rejected-without-being-adopted" class="md-nav__link">
+  <a href="#evaluated-and-rejected" class="md-nav__link">
     <span class="md-ellipsis">
       
-        What was rejected without being adopted
+        Evaluated and rejected
       
     </span>
   </a>
@@ -1155,8 +1155,8 @@
 
 
 <h1 id="decisions">Decisions<a class="headerlink" href="#decisions" title="Permanent link">#</a></h1>
-<p>Each page follows the same outline: <strong>context → decision → alternatives rejected → trade-offs and cost →
-when to revisit</strong>. Trade-offs are written in black and white: a choice with no cost is not a choice.</p>
+<p>Every page follows the same outline: <strong>context → decision → rejected alternatives → trade-offs and cost →
+when to revisit</strong>. Trade-offs are spelled out in black and white: a choice with no cost is not a choice.</p>
 <table>
 <thead>
 <tr>
@@ -1169,7 +1169,7 @@ when to revisit</strong>. Trade-offs are written in black and white: a choice wi
 <tr>
 <td><a href="001-talos-hetzner-terraform/">001</a></td>
 <td>Talos Linux on Hetzner, provisioned by a maintained Terraform module</td>
-<td>Depending on the module's defaults, partly unusable as-is</td>
+<td>Depending on the module's defaults, partly unusable as is</td>
 </tr>
 <tr>
 <td><a href="002-control-plane-unique/">002</a></td>
@@ -1184,12 +1184,12 @@ when to revisit</strong>. Trade-offs are written in black and white: a choice wi
 <tr>
 <td><a href="004-retour-hetzner/">004</a></td>
 <td>Hetzner → Infomaniak → Scaleway → Hetzner</td>
-<td>Three migrations in two months to find the right price / reliability trade-off</td>
+<td>Three provider switches, absorbed by IaC and GitOps</td>
 </tr>
 <tr>
 <td><a href="005-argocd-flux-argocd/">005</a></td>
 <td>ArgoCD → Flux → ArgoCD</td>
-<td>Four months on Flux because of a misattributed bug</td>
+<td>Flux has the better architecture, ArgoCD dominates the market: I chose the market</td>
 </tr>
 <tr>
 <td><a href="006-app-of-apps-sync-waves/">006</a></td>
@@ -1198,13 +1198,13 @@ when to revisit</strong>. Trade-offs are written in black and white: a choice wi
 </tr>
 <tr>
 <td><a href="007-crossplane-api-self-service/">007</a></td>
-<td>A homemade <code>App</code> / <code>Database</code> API with Crossplane</td>
+<td>A home-grown <code>App</code> / <code>Database</code> API with Crossplane</td>
 <td>One more abstraction layer to maintain and test</td>
 </tr>
 <tr>
 <td><a href="008-gateway-api-cilium/">008</a></td>
 <td>Gateway API served by Cilium, with no separate ingress controller</td>
-<td>Coupling to the CNI, to be paid again when moving to a managed Kubernetes</td>
+<td>Coupling to the CNI, to be paid again when moving to managed Kubernetes</td>
 </tr>
 <tr>
 <td><a href="009-secrets-infisical-eso/">009</a></td>
@@ -1213,23 +1213,23 @@ when to revisit</strong>. Trade-offs are written in black and white: a choice wi
 </tr>
 <tr>
 <td><a href="010-kyverno-audit-garde-fous/">010</a></td>
-<td>Kyverno: audit for best practices, blocking for data</td>
-<td>Best-practice violations are flagged, not prevented</td>
+<td>Kyverno: audit for best practices, enforcement for data</td>
+<td>Best-practice violations are reported, not prevented</td>
 </tr>
 <tr>
 <td><a href="011-retrait-obi-sdk-otel/">011</a></td>
-<td>Remove the eBPF instrumentation in favor of the OpenTelemetry SDK</td>
-<td>Changing the application code to trace it</td>
+<td>Remove eBPF instrumentation in favor of the OpenTelemetry SDK</td>
+<td>Changing application code in order to trace it</td>
 </tr>
 <tr>
 <td><a href="012-pas-de-rendered-manifests/">012</a></td>
 <td>No <em>Rendered Manifests Pattern</em>, a render diff in CI instead</td>
-<td>No Git history of the rendered manifests</td>
+<td>No Git history of rendered manifests</td>
 </tr>
 </tbody>
 </table>
-<h2 id="what-was-rejected-without-being-adopted">What was rejected without being adopted<a class="headerlink" href="#what-was-rejected-without-being-adopted" title="Permanent link">#</a></h2>
-<p>A short list of tools evaluated then refused, with the reason in one line:</p>
+<h2 id="evaluated-and-rejected">Evaluated and rejected<a class="headerlink" href="#evaluated-and-rejected" title="Permanent link">#</a></h2>
+<p>A short list of tools evaluated then declined, with the reason in one line:</p>
 <table>
 <thead>
 <tr>
@@ -1243,12 +1243,12 @@ when to revisit</strong>. Trade-offs are written in black and white: a choice wi
 <td>A single cluster, no multi-environment need</td>
 </tr>
 <tr>
-<td>Kargo, promotion by environment folders</td>
-<td>No persistent environment to promote: a permanent staging would cost 24/7 for one person</td>
+<td>Kargo, promotion through environment folders</td>
+<td>No persistent environment to promote to: a permanent staging would cost 24/7 for a single person</td>
 </tr>
 <tr>
 <td>Per-PR preview environments</td>
-<td>Full plan costed (~+€15/month, 17 files across 3 repos), rejected: GitOps adds latency where the ephemeral must be disposable</td>
+<td>Full plan costed (~+€15/month, 17 files across 3 repos), dropped: GitOps adds latency where ephemeral should be disposable</td>
 </tr>
 <tr>
 <td>vCluster</td>
@@ -1260,7 +1260,7 @@ when to revisit</strong>. Trade-offs are written in black and white: a choice wi
 </tr>
 <tr>
 <td>Backup encryption (AGE)</td>
-<td>Bucket is already private; key management costs more than the risk it covers</td>
+<td>Bucket already private; key management costs more than the risk covered</td>
 </tr>
 <tr>
 <td>Self-hosted Infisical</td>
