@@ -30,8 +30,8 @@ entièrement).
   cédé.
 - **La disponibilité des types de serveur change sans préavis.** Chez Hetzner, `cx43`/`cx53` ont disparu
   et `cx33` est passé par trois états en une heure. La disponibilité se vérifie à chaque `apply`.
-- **Le « bug Talos » n'en était pas un.** Il venait de l'instrumentation eBPF (voir
-  [décision 011](011-retrait-obi-sdk-otel.md)). Une attribution non mesurée a pesé dans une migration.
+- **Le « bug Talos » n'en était pas un.** Il venait de l'instrumentation eBPF, que j'ai fini par
+  isoler par A/B (voir [décision 011](011-retrait-obi-sdk-otel.md)).
 
 ## Alternatives écartées
 
@@ -43,6 +43,6 @@ entièrement).
 
 ## Compromis et coût
 
-Trois migrations en deux mois. Chacune a été menée comme un projet, avec un PRD, des jalons et une
-mesure de fin, et le GitOps a permis de reconstruire la plateforme à chaque fois. Coût actuel :
-**41,36 €/mois**.
+Trois bascules en deux mois, chacune menée comme un projet : PRD, jalons, mesure de fin. C'est aussi
+la meilleure preuve de la portabilité de la plateforme : Terraform + GitOps l'ont reconstruite à
+l'identique sur trois hébergeurs. Coût actuel : **41,36 €/mois**.

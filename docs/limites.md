@@ -1,7 +1,7 @@
 # Limites connues
 
-Ce que la plateforme ne fait pas, ou pas encore. Certaines limites sont des choix chiffrés, d'autres
-sont des chantiers ouverts.
+Ce que la plateforme ne fait pas, ou pas encore. La plupart sont des choix chiffrés ; le reste forme la
+feuille de route.
 
 ## Choix assumés
 
@@ -14,18 +14,14 @@ sont des chantiers ouverts.
 | CI Terraform en *plan* seul, déclenchée à la main | L'API d'administration est filtrée sur l'IP de l'administrateur : un runner CI y apparaîtrait toujours en dérive | Une liste d'IP statiques autorisées |
 | Les règles d'alerte par défaut suivent leur dépôt amont | Les figer reviendrait à recopier la liste du chart, qui dériverait à son tour | Un seuil d'alerte modifié en amont qui pose problème |
 
-## Chantiers ouverts {#chantiers-ouverts}
+## Feuille de route {#chantiers-ouverts}
 
-- **Agent SRE : moindre privilège.** En production, l'agent ne fait que notifier et proposer des pull
-  requests (mode manuel). Ses droits dans le cluster restent plus larges que ce mode n'exige, et il
-  n'existe pas encore de budget global de consommation LLM. Un audit complet a listé les corrections à
-  faire. C'est la prochaine étape avant tout mode automatique.
-- **Lint en CI pour Backstage.** Il est lancé en local avant chaque push. Le job CI existe en commentaire,
-  à réactiver dès qu'il y aura un second contributeur.
-- **Tests applicatifs de la page vitrine.** Tests de routes seulement ; la lecture de l'API Kubernetes
-  n'est pas couverte.
-- **Un plugin de sauvegarde PostgreSQL encore installé par manifeste brut.** Le chart Helm officiel
-  existe désormais : la migration est prête à faire.
+- **Agent SRE (en cours de développement).** Il tourne en mode manuel : il enquête, notifie et propose
+  des pull requests, un humain décide. Avant d'envisager un mode automatique : durcissement du moindre
+  privilège outil par outil, et budget global de consommation LLM.
+- **Lint en CI pour Backstage.** Lancé en local avant chaque push ; le job CI est prêt, à activer dès
+  l'arrivée d'un second contributeur.
+- **Passage du plugin de sauvegarde PostgreSQL sur son chart Helm officiel**, désormais disponible.
 
 ## Ce que je ferais avec une équipe
 

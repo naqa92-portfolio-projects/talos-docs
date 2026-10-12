@@ -1,7 +1,7 @@
-# 011 · Remove the eBPF instrumentation in favor of the OpenTelemetry SDK
+# 011 · Remove eBPF instrumentation in favor of the OpenTelemetry SDK
 
-> **In one sentence:** the "no code changes" instrumentation had been corrupting processes for seven
-> months; for a single application whose code I control, the SDK does better, with no privilege.
+> **In one sentence:** "no code change" eBPF instrumentation turned out to be intrusive; for an
+> application whose code I control, the OpenTelemetry SDK does better, with no privileges.
 
 | Status | Date | Repo |
 |---|---|---|
@@ -10,16 +10,15 @@
 ## Context
 
 OBI (OpenTelemetry eBPF Instrumentation) traces applications without modifying their images: a
-privileged DaemonSet places probes in processes. Adopted in February 2026, it initially covered
+privileged DaemonSet places probes inside processes. Adopted in February 2026, it initially covered
 all namespaces.
 
-## What it broke
+## What I measured
 
-- Pipe reads of instrumented processes were corrupted. Effect **proven** on the
-  PostgreSQL backups: excluding the pod was enough to restore them.
-- The same signature weighed on two migrations ([005](005-argocd-flux-argocd.md),
-  [004](004-retour-hetzner.md)), after being blamed in turn on barman, the Talos kernel and the
-  CloudNativePG plugin.
+- The eBPF probes disrupted pipe reads in the instrumented processes. I **proved** it with an
+  A/B on the PostgreSQL backups: excluding the pod from instrumentation was enough to restore them.
+- The symptom looked like bugs in other components (ArgoCD, Talos kernel, CloudNativePG plugin):
+  a privileged DaemonSet writing into process memory clouds every diagnosis.
 - About 350 Mi of memory per node to trace a single Django application.
 
 ## Decision
@@ -30,11 +29,11 @@ metrics to VictoriaMetrics.
 
 ## Trade-offs and cost
 
-The code has to be modified to trace. The "zero modification" argument only holds for third-party
+Code has to be modified to trace. The "zero modification" argument only holds for third-party
 applications, and there are none here.
 
 ## What I take from it
 
-Before removing OBI, each suspicion was A/B tested: one proven (PostgreSQL), two not
+Before removing OBI, every suspicion was tested with an A/B: one proven (PostgreSQL), two not
 reproduced (ArgoCD, Authentik). An 863-line workaround put in place for Authentik turned out to be
-useless and was removed, with proof.
+unnecessary and was removed, with evidence.

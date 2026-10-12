@@ -17,21 +17,22 @@ shows exactly what is running. The pattern is highly recommended in the GitOps l
 1. **ArgoCD's native implementation (Source Hydrator) cannot express this repo**: 23 Applications
    out of 37 combine a remote chart, values and local manifests. Both gaps are open
    upstream requests.
-2. **Rendering in CI does not faithfully reproduce the cluster**: 17 charts out of 22 read the real capabilities
-   of the API (`.Capabilities`), which a CI does not know, and 7 emit Helm hooks that the pattern loses.
-3. **The attempt broke production.** During the migration, a component was rendered with its default
-   values while still displayed `Healthy` (see [incidents](../incidents.md#fenetre-migration)).
+2. **Rendering in CI does not faithfully reproduce the cluster**: 17 charts out of 22 read the real API
+   capabilities (`.Capabilities`), which a CI does not know, and 7 emit Helm hooks that the pattern loses.
+3. **The migration opens a risk window per component.** During the trial, a component was rendered
+   with its default values while still showing `Healthy`. Spotted and rolled back in a minute (see
+   [incidents](../incidents.md#fenetre-migration)).
 
 ## Decision
 
 `argocd-diff-preview` in CI: each PR receives as a comment the diff of the manifests rendered on both
-sides. It is the same information for the review, with no artifact to maintain.
+sides. It is the same information for review, with no artifact to maintain.
 
 ## Trade-offs and cost
 
-No Git history of the rendered manifests: you cannot `git blame` a final object.
+No Git history of rendered manifests: no `git blame` on a final object.
 
 ## When to revisit
 
-If one day the history of rendered manifests is needed to find a regression, if a cold
-start fails for lack of access to the chart repos, or if the upstream requests are delivered.
+If the history of rendered manifests is ever needed to track down a regression, if a cold
+start fails for lack of access to chart repos, or if the upstream requests ship.

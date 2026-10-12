@@ -17,9 +17,9 @@ chaque page de décision.
     ou Kyverno en audit, et je sais dire ce qui changerait avec une équipe.
 
 ??? question "Qu'est-ce que tu referais différemment ?"
-    Mesurer avant d'attribuer. J'ai changé d'outil GitOps à cause d'un bug que j'avais attribué à
-    ArgoCD, alors qu'il venait de l'instrumentation eBPF. Et sur un Kubernetes managé, mesurer la
-    latence etcd avant de migrer, pas après.
+    Sur un Kubernetes managé, mesurer la latence etcd dès le premier jour, avant de migrer le GitOps.
+    Et isoler plus tôt les composants qui instrumentent d'autres processus : une sonde eBPF peut imiter
+    le bug d'un autre outil.
 
 ## Infrastructure
 
@@ -46,9 +46,10 @@ chaque page de décision.
 ## GitOps
 
 ??? question "Pourquoi ArgoCD ? Tu étais passé sur Flux."
-    Je suis passé sur Flux pour fuir un bug. Quand la même signature est apparue sur d'autres composants,
-    prouvée comme venant de l'instrumentation eBPF, la raison du départ est tombée. J'ai refait une
-    preuve A/B (334 `git fetch`, 0 erreur) avant de revenir. → [005](decisions/005-argocd-flux-argocd.md)
+    J'ai testé Flux quatre mois, au moment de la sortie de la Web UI de Flux Operator. Son architecture
+    est meilleure, mais il est plus difficile à prendre en main, et ArgoCD reste le standard du marché.
+    La panne qui avait accéléré le départ venait en fait d'une instrumentation eBPF : je l'ai vérifié
+    par A/B (334 `git fetch`, 0 erreur) avant de revenir. → [005](decisions/005-argocd-flux-argocd.md)
 
 ??? question "Comment gères-tu l'ordre de déploiement sans `dependsOn` ?"
     Des vagues : la vague suivante attend que toute la précédente soit synchronisée et en bonne santé.
@@ -56,10 +57,11 @@ chaque page de décision.
     Lua, sans quoi les vagues n'attendent rien. → [006](decisions/006-app-of-apps-sync-waves.md)
 
 ??? question "Raconte-moi un incident."
-    Pendant une migration du dépôt GitOps, ArgoCD a fait tourner l'ancienne définition d'une Application
-    sur les nouveaux fichiers et a supprimé une base PostgreSQL. Je l'ai restaurée sans perte grâce aux
-    journaux archivés sur B2. Une politique Kyverno a arrêté la cascade. Leçon : séparer en deux commits
-    le changement de définition et le changement de contenu. → [Incident](incidents.md#prune-saveit)
+    Pendant une migration du dépôt GitOps, ArgoCD a appliqué l'ancienne définition d'une Application sur
+    les nouveaux fichiers et a déclenché une suppression. La défense en profondeur a joué : la politique
+    Kyverno a bloqué la cascade, et la base a été restaurée à la seconde près depuis les journaux
+    archivés, sans perte de données. Depuis, ce type de changement se fait en deux commits, et un
+    contrôle CI empêche la cause de revenir. → [Incident](incidents.md#prune-saveit)
 
 ??? question "Pourquoi pas le Rendered Manifests Pattern ?"
     L'implémentation native d'ArgoCD ne sait pas exprimer 23 de mes 37 Applications. Rendu en CI, le
@@ -91,9 +93,9 @@ chaque page de décision.
 ## Agent SRE
 
 ??? question "Tu laisses un LLM modifier ta production ?"
-    Non. En production, l'agent enquête en lecture et propose. Un humain décide, et une ressource gérée
-    en GitOps n'est corrigée que par pull request. Le prochain chantier, avant tout mode automatique, est
-    de resserrer ses droits au strict nécessaire. → [sre-agent](projets/sre-agent.md)
+    Non. L'agent, encore en développement, tourne en mode manuel : il enquête et propose, un humain
+    décide, et une ressource gérée en GitOps n'est corrigée que par pull request. Un mode automatique
+    ne viendra qu'après un durcissement du moindre privilège outil par outil. → [sre-agent](projets/sre-agent.md)
 
 ??? question "Pourquoi ne pas utiliser kagent ou une passerelle LLM ?"
     Une plateforme partagée ne se rentabilise qu'avec plusieurs consommateurs, et il n'y en a qu'un.

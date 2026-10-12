@@ -57,13 +57,13 @@ flowchart LR
 
 ## Ce que ce projet montre surtout
 
-Des **décisions défendues, puis remises en cause sur mesure**. Le projet a changé deux fois d'outil
-GitOps et trois fois d'hébergeur. Chaque changement s'appuie sur une mesure, et un des retours en
-arrière a montré que la panne d'origine avait été mal attribuée. C'est la partie la plus utile à lire :
+Des **décisions défendues, puis remises en cause sur mesure**. La plateforme a été reconstruite sur
+trois hébergeurs et deux outils GitOps sans réécrire les applications. Chaque bascule s'appuie sur une
+mesure, et chaque retour en arrière sur une preuve A/B. C'est la partie la plus utile à lire :
 
-- [ArgoCD → Flux → ArgoCD : un bug mal attribué](decisions/005-argocd-flux-argocd.md)
+- [ArgoCD → Flux → ArgoCD : tester une meilleure architecture, revenir au standard du marché](decisions/005-argocd-flux-argocd.md)
 - [Hetzner → Infomaniak → Scaleway → Hetzner](decisions/004-retour-hetzner.md)
-- [L'incident où une migration a détruit une base de données, restaurée sans perte](incidents.md#prune-saveit)
+- [Un incident de migration contenu par un garde-fou et restauré sans perte de données](incidents.md#prune-saveit)
 
 ## Parcours de lecture
 

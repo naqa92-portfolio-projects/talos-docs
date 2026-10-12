@@ -8,8 +8,8 @@ quand la revoir**. Les compromis sont écrits noir sur blanc : un choix sans co�
 | [001](001-talos-hetzner-terraform.md) | Talos Linux sur Hetzner, provisionné par un module Terraform maintenu | Dépendre des choix par défaut du module, en partie inutilisables tels quels |
 | [002](002-control-plane-unique.md) | Un seul control plane, `cx33` minimum | Aucune tolérance de panne sur etcd : perdre le nœud impose de reconstruire |
 | [003](003-pas-de-haute-disponibilite.md) | Pas de haute disponibilité : auto-réparation plutôt que continuité | Chaque composant est un point unique de défaillance, assumé |
-| [004](004-retour-hetzner.md) | Hetzner → Infomaniak → Scaleway → Hetzner | Trois migrations en deux mois pour trouver le bon compromis prix / fiabilité |
-| [005](005-argocd-flux-argocd.md) | ArgoCD → Flux → ArgoCD | Quatre mois sur Flux à cause d'un bug mal attribué |
+| [004](004-retour-hetzner.md) | Hetzner → Infomaniak → Scaleway → Hetzner | Trois bascules d'hébergeur, absorbées par l'IaC et le GitOps |
+| [005](005-argocd-flux-argocd.md) | ArgoCD → Flux → ArgoCD | Flux a la meilleure architecture, ArgoCD domine le marché : j'ai choisi le marché |
 | [006](006-app-of-apps-sync-waves.md) | App-of-apps découverte par dossier, ordonnée par vagues | Un démarrage à froid sérialisé, plus lent |
 | [007](007-crossplane-api-self-service.md) | Une API maison `App` / `Database` avec Crossplane | Une couche d'abstraction de plus à maintenir et à tester |
 | [008](008-gateway-api-cilium.md) | Gateway API servie par Cilium, sans contrôleur d'entrée séparé | Couplage au CNI, à repayer en cas de passage sur un Kubernetes managé |

@@ -19,8 +19,9 @@ montre exactement ce qui tourne. Le pattern est très recommandé dans la litté
    demandes ouvertes en amont.
 2. **Rendre en CI ne reproduit pas fidèlement le cluster** : 17 charts sur 22 lisent les capacités réelles
    de l'API (`.Capabilities`), qu'une CI ne connaît pas, et 7 émettent des hooks Helm que le pattern perd.
-3. **La tentative a cassé la production.** Pendant la migration, un composant a été rendu avec ses
-   valeurs par défaut tout en restant affiché `Healthy` (voir [incidents](../incidents.md#fenetre-migration)).
+3. **La migration ouvre une fenêtre de risque par composant.** Pendant l'essai, un composant a été rendu
+   avec ses valeurs par défaut tout en restant affiché `Healthy`. Repéré et annulé en une minute (voir
+   [incidents](../incidents.md#fenetre-migration)).
 
 ## Décision
 

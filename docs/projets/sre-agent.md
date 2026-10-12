@@ -6,6 +6,7 @@
 | | |
 |---|---|
 | Rôle | Diagnostic automatique des pannes, remédiation sous contrôle humain |
+| État | **En cours de développement**, déployé en mode manuel |
 | Outils | TypeScript (serveur MCP, Vercel AI SDK), Go (contrôleur kubebuilder), Helm, VictoriaMetrics MCP |
 | Visibilité | Privé |
 
@@ -45,7 +46,7 @@ Le projet porte une tranche d'un projet open source existant (*dot-ai*). Une pre
 trop divergé de l'amont et a été abandonnée. Leçon : relire le code amont à chaque décision.
 Environ 170 tests (Vitest côté TypeScript, Ginkgo / envtest côté Go).
 
-## Limites
+## Prochaines étapes
 
-Voir [Limites connues](../limites.md#chantiers-ouverts) : le moindre privilège de l'agent est le
-prochain chantier, avant tout mode automatique.
+Durcissement du moindre privilège outil par outil et budget global de consommation LLM, avant tout
+mode automatique. Voir la [feuille de route](../limites.md#chantiers-ouverts).

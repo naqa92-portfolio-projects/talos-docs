@@ -1,60 +1,58 @@
 # 005 · ArgoCD → Flux → ArgoCD
 
-> **En une phrase :** j'ai quitté ArgoCD à cause d'un bug que j'avais attribué à ArgoCD ; quatre mois
-> plus tard, la même signature est apparue ailleurs, prouvée comme venant d'un autre composant, et je
-> suis revenu sur ArgoCD après une preuve A/B.
+> **En une phrase :** j'ai testé Flux en conditions réelles pendant quatre mois. Son architecture est
+> meilleure, mais ArgoCD est le standard du marché, et la panne qui m'avait poussé à partir s'est
+> révélée étrangère à ArgoCD : je suis revenu.
 
 | Statut | Date | Dépôt |
 |---|---|---|
 | Retenu : ArgoCD | Flux le 2026-05-30, retour ArgoCD le 2026-09-13 | `talos-argocd` (ex-`talos-fluxcd`) |
 
-## Contexte
+## Pourquoi j'ai testé Flux
 
-Au printemps 2026, le composant d'ArgoCD qui lit Git (`repo-server`) échouait de façon chronique au
-démarrage du cluster (`git fetch exit 128`, sortie remplie d'octets nuls). Quatre contournements
-empilés ne suffisaient pas. Un PoC Flux sur le même cluster donnait **0 erreur**, contre 16 côté
-ArgoCD. J'ai migré.
+Deux raisons, arrivées en même temps :
 
-## Ce qui a changé le diagnostic
+1. **La sortie de la [Web UI de Flux Operator](https://fluxoperator.dev/web-ui/).** L'absence
+   d'interface était le principal reproche fait à Flux face à ArgoCD. Une UI intégrée, avec SSO OIDC
+   et un graphe du pipeline de livraison, levait cet argument. C'était le moment de comparer les deux
+   outils sur un vrai cluster.
+2. **Une panne récurrente côté ArgoCD.** Le composant qui lit Git (`repo-server`) échouait au
+   démarrage du cluster (`git fetch exit 128`). Un PoC Flux sur le même cluster donnait 0 erreur,
+   contre 16 côté ArgoCD.
 
-1. La même signature (octets nuls dans la sortie d'un sous-processus) a été **prouvée** sur les
-   sauvegardes PostgreSQL comme un effet de l'instrumentation eBPF OBI. Exclure le pod d'OBI
-   suffisait à faire passer la sauvegarde. Or OBI instrumentait aussi le namespace d'ArgoCD pendant
-   toute la vie du bug.
-2. Sous Flux, Velero a présenté la même signature : changer d'outil GitOps n'avait pas supprimé le
-   problème.
+## Ce que quatre mois de Flux m'ont appris
 
-## La preuve avant de revenir
+**Flux a la meilleure architecture.** Des contrôleurs spécialisés (sources, Kustomize, Helm) plutôt
+qu'un serveur central. Des dépendances natives entre composants (`dependsOn` + `wait`), des contrôles
+de santé en CEL, et l'application d'un composant en une seule passe.
 
-Banc dédié, uprobes vérifiées avant chaque fenêtre de mesure : **334 `git fetch` instrumentés,
-0 erreur**. Puis, en production, 0 occurrence sur plus de 40 000 lignes de logs, sur cinq démarrages
-complets.
+**Mais il est plus difficile à prendre en main.** Il y a plus d'objets à comprendre, l'état est réparti
+entre plusieurs contrôleurs, et le debug passe davantage par la CLI que par une vue d'ensemble.
 
-**Portée du résultat, sans la surestimer :** le banc n'avait ni la même version d'ArgoCD ni le même
-noyau que l'incident. La cause OBI est très probable, mais ni prouvée ni écartée pour l'incident
-historique.
+## Pourquoi je suis revenu sur ArgoCD
+
+1. **Le marché.** ArgoCD est le moteur GitOps le plus demandé dans les équipes plateforme. Le maîtriser
+   en profondeur, ordonnancement, santé des Applications, diff de rendu en CI, a plus de valeur pour mes
+   missions.
+2. **La panne n'était pas d'ArgoCD.** La même signature (octets nuls dans la sortie d'un sous-processus)
+   est apparue sur d'autres composants. Je l'ai isolée par A/B : elle venait de l'instrumentation eBPF
+   OBI ([décision 011](011-retrait-obi-sdk-otel.md)). Avant de revenir, j'ai refait une preuve sur un banc
+   dédié : **334 `git fetch` instrumentés, 0 erreur**. Puis, en production, 0 occurrence sur plus de
+   40 000 lignes de logs, sur cinq démarrages complets.
 
 ## Décision
 
-Retour sur ArgoCD. Ce n'est pas un *revert* : le dépôt a été réécrit, avec cette fois un ordonnancement
-explicite du démarrage ([décision 006](006-app-of-apps-sync-waves.md)). Son absence expliquait aussi
-une partie de la charge initiale.
-
-Pourquoi revenir plutôt que rester sur Flux : **ce bug était la seule raison du départ**. L'argument
-« Flux ne lance aucun sous-processus » n'avait jamais été un besoin, seulement une propriété constatée
-après coup. Le motif tombé, la décision tombait aussi. Les briques ArgoCD déjà construites étaient
-réutilisables : SSO, diff de rendu en CI (`argocd-diff-preview`), plugin Backstage.
+Retour sur ArgoCD. Ce n'est pas un *revert* : le dépôt a été réécrit, et il reprend ce que Flux faisait
+mieux. L'ordonnancement du démarrage devient explicite ([décision 006](006-app-of-apps-sync-waves.md)),
+et des contrôles de santé écrits en Lua remplacent ceux de Flux en CEL.
 
 ## Compromis et coût
 
-- ArgoCD n'a pas de `dependsOn` entre Applications, contrairement à Flux. Il a fallu des vagues et un
-  contrôle de santé écrit en Lua.
-- Quatre mois sur un outil choisi pour une mauvaise raison, et deux migrations complètes.
+- ArgoCD n'a pas de `dependsOn` entre Applications : il a fallu des vagues et un contrôle de santé Lua.
+- Deux migrations complètes du GitOps. Les deux ont été absorbées sans toucher aux applications.
 
 ## Ce que j'en retiens
 
-- **Un composant eBPF est un suspect par défaut** dans tout diagnostic « impossible » sur un pod qu'il
-  instrumente. Il se limite par workload, jamais à un namespace entier.
-- **Un suspect n'est pas un coupable.** Une attribution non mesurée coûte aussi cher que le bug.
-- J'ai prévu un repli gradué si le motif revenait, et je me suis interdit de remettre les
-  contournements d'avant.
+- Comparer deux outils sur un vrai cluster apprend plus qu'une matrice de fonctionnalités.
+- Un composant qui instrumente d'autres processus est un suspect par défaut dans tout diagnostic
+  « impossible ». Chaque suspicion se vérifie par A/B avant d'agir.

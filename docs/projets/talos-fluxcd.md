@@ -10,9 +10,10 @@
 
 ## Pourquoi il a existé
 
-Pour fuir un bug chronique attribué à ArgoCD. Un PoC sur le même cluster donnait 0 erreur sous Flux,
-contre 16 sous ArgoCD. Le bug venait en réalité d'un autre composant : toute l'histoire est dans la
-[décision 005](../decisions/005-argocd-flux-argocd.md).
+Pour comparer Flux et ArgoCD sur un vrai cluster, au moment où la
+[Web UI de Flux Operator](https://fluxoperator.dev/web-ui/) levait le principal reproche fait à Flux,
+l'absence d'interface. Une panne récurrente côté ArgoCD a accéléré le passage. Toute l'histoire est dans
+la [décision 005](../decisions/005-argocd-flux-argocd.md).
 
 ## Ce que Flux faisait mieux, et qu'il a fallu reconstruire sous ArgoCD
 
@@ -24,5 +25,6 @@ contre 16 sous ArgoCD. Le bug venait en réalité d'un autre composant : toute l
 
 ## Ce que j'en retiens
 
-Changer d'outil n'a pas supprimé le problème : la même signature est réapparue sous Flux, sur Velero.
-C'est ce qui a remis le diagnostic en cause.
+Flux a la meilleure architecture, mais il est plus exigeant à prendre en main. ArgoCD reste le standard
+du marché, d'où le retour. Et la panne a suivi le cluster sous Flux, ce qui a permis d'en trouver la
+vraie cause, étrangère aux deux outils.

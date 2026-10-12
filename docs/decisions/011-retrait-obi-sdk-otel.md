@@ -1,7 +1,7 @@
 # 011 · Retirer l'instrumentation eBPF au profit du SDK OpenTelemetry
 
-> **En une phrase :** l'instrumentation « sans toucher au code » corrompait des processus depuis sept
-> mois ; pour une seule application dont je contrôle le code, le SDK fait mieux, sans privilège.
+> **En une phrase :** l'instrumentation eBPF « sans toucher au code » s'est révélée intrusive ; pour une
+> application dont je contrôle le code, le SDK OpenTelemetry fait mieux, sans privilège.
 
 | Statut | Date | Dépôt |
 |---|---|---|
@@ -13,13 +13,12 @@ OBI (OpenTelemetry eBPF Instrumentation) trace les applications sans modifier le
 DaemonSet privilégié pose des sondes dans les processus. Adopté en février 2026, il couvrait au départ
 tous les namespaces.
 
-## Ce qu'il a cassé
+## Ce que j'ai mesuré
 
-- Les lectures de pipe des processus instrumentés étaient corrompues. Effet **prouvé** sur les
-  sauvegardes PostgreSQL : exclure le pod suffisait à les rétablir.
-- La même signature a pesé dans deux migrations ([005](005-argocd-flux-argocd.md),
-  [004](004-retour-hetzner.md)), après avoir été attribuée tour à tour à barman, au noyau Talos et au
-  plugin CloudNativePG.
+- Les sondes eBPF perturbaient les lectures de pipe des processus instrumentés. Je l'ai **prouvé** par
+  A/B sur les sauvegardes PostgreSQL : exclure le pod de l'instrumentation suffisait à les rétablir.
+- Le symptôme ressemblait à des bugs d'autres composants (ArgoCD, noyau Talos, plugin CloudNativePG) :
+  un DaemonSet privilégié qui écrit dans la mémoire des processus brouille tous les diagnostics.
 - Environ 350 Mi de mémoire par nœud pour tracer une seule application Django.
 
 ## Décision

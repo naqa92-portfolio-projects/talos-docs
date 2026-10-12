@@ -3,41 +3,44 @@
 Les pannes sont la partie la plus instructive du projet. Chacune suit le même format : **symptôme →
 cause → correctif → leçon**.
 
-## Une migration GitOps a détruit une base de données {#prune-saveit}
+## Une migration GitOps qui a déclenché une suppression, restaurée sans perte {#prune-saveit}
 
-**Symptôme.** Pendant le retrait de Kustomize du dépôt GitOps (15 septembre 2026), deux namespaces
-applicatifs sont passés en `Terminating`. Le cluster PostgreSQL de l'application saveit et ses deux
-volumes ont été supprimés.
+**Contexte.** Pendant le retrait de Kustomize du dépôt GitOps, ArgoCD a supprimé (*prune*) les
+ressources de deux applications, dont leur base PostgreSQL.
 
 **Cause.** Entre le merge d'un commit et l'application de la nouvelle définition d'une Application,
 ArgoCD fait tourner l'**ancienne** définition sur les **nouveaux** fichiers. L'ancienne ne savait lire
-le dossier qu'à travers son fichier Kustomize, qui venait d'être supprimé. ArgoCD a alors lu le dossier
-en mode non récursif, n'y a trouvé presque rien, et a supprimé le reste (*prune*). Le `prune: false`
-ajouté dans le même commit ne protégeait rien : il ne prenait effet qu'avec la nouvelle définition.
+le dossier qu'à travers son fichier Kustomize, qui venait d'être supprimé. ArgoCD a lu le dossier en
+mode non récursif, n'y a trouvé presque rien, et a retiré le reste. Le `prune: false` ajouté dans le
+même commit ne pouvait pas protéger : il ne prenait effet qu'avec la nouvelle définition.
 
-**Correctif.** Restauration à un instant donné (PITR) depuis les journaux PostgreSQL archivés sur B2 :
-**aucune perte de données**, la chaîne d'archives étant continue jusqu'à six secondes après le début de
-la suppression. Une politique Kyverno a refusé la suppression des ressources Crossplane et arrêté la
-cascade.
+**Ce qui a fonctionné.**
 
-Trois jours plus tôt, un premier essai du même chantier avait déjà fait supprimer une base par un
-motif de fichiers mal compris. L'essai avait été annulé.
+- **Garde-fou** : la politique Kyverno qui protège les données a refusé la suppression des ressources
+  Crossplane et arrêté la cascade.
+- **Restauration** : restauration à un instant donné (PITR) depuis les journaux PostgreSQL archivés en
+  continu sur B2, par la procédure scriptée déjà utilisée lors des reconstructions de cluster.
+  **Aucune perte de données** : la chaîne d'archives couvrait jusqu'à six secondes après le début de
+  la suppression.
 
-**Leçons.**
+**Ce que j'ai changé ensuite.**
 
-1. Quand un changement touche à la fois une définition et le contenu qu'elle lit, il faut **deux
+1. Un changement qui touche à la fois une définition et le contenu qu'elle lit se fait en **deux
    commits** : d'abord la définition, vérifiée sur le cluster, ensuite le contenu.
-2. Une protection écrite dans le commit qui crée le risque ne protège pas ce commit.
-3. Un diff de rendu en CI compare des états **finaux** : il ne voit pas la fenêtre de transition.
-4. Une règle de blocage sur la suppression des données vaut plus que dix règles d'audit.
-5. Une sauvegarde ne vaut que par sa restauration. La procédure était scriptée et avait déjà servi
-   deux jours plus tôt, lors de la reconstruction du cluster.
+2. Un contrôle CI vérifie désormais que chaque Application déclare explicitement son mode de lecture,
+   et interdit le retour de fichiers Kustomize.
+3. Une migration se juge sur la date de création des pods, pas seulement sur `Healthy` / `Synced`.
+
+**Ce que ça montre.** Une protection écrite dans le commit qui crée le risque ne couvre pas ce commit,
+et un diff de rendu en CI ne voit pas la fenêtre de transition, puisqu'il compare des états finaux.
+La défense en profondeur (garde-fou d'admission + sauvegarde continue + restauration répétée) a fait
+son travail.
 
 ## Un composant « Healthy » rendu avec ses valeurs par défaut {#fenetre-migration}
 
-**Symptôme.** Le même jour, sur un autre chantier, la sonde de disponibilité Gatus a été recréée sans
-sa configuration, sans ses volumes et avec le compte de service par défaut, alors qu'ArgoCD l'affichait
-`Healthy` et `Synced` du début à la fin.
+**Symptôme.** Pendant l'évaluation d'un autre pattern, la sonde de disponibilité Gatus a été recréée
+sans sa configuration, sans ses volumes et avec le compte de service par défaut, alors qu'ArgoCD
+l'affichait `Healthy` et `Synced` du début à la fin.
 
 **Cause.** La même fenêtre de transition : l'ancienne définition lisait un fichier de valeurs restructuré
 et n'y reconnaissait plus rien. **Un rendu avec les valeurs par défaut est un rendu valide**, donc
@@ -60,14 +63,14 @@ Les sondes de santé expiraient. Aucun signal mémoire classique ne s'est décle
 **Leçon.** Dimensionner sur le pic de démarrage, et surveiller le CPU du control plane avant la
 mémoire. → [Décision 002](decisions/002-control-plane-unique.md)
 
-## Un bug attribué au mauvais composant pendant sept mois
+## Un bug « impossible », traqué jusqu'à sa vraie cause
 
 **Symptôme.** Des sous-processus lisaient des octets nuls à la place de leur sortie : ArgoCD (`git
 fetch`), les sauvegardes PostgreSQL, Velero.
 
-**Cause.** L'instrumentation eBPF OBI, qui pose des sondes dans les processus. L'effet a été prouvé sur
-PostgreSQL. Le problème avait d'abord été attribué à ArgoCD, au noyau Talos, à barman et au plugin
-CloudNativePG.
+**Cause.** L'instrumentation eBPF OBI, qui pose des sondes dans les processus. Je l'ai prouvé par A/B
+sur PostgreSQL : exclure le pod de l'instrumentation suffisait à rétablir les sauvegardes. Le symptôme
+pointait d'abord vers ArgoCD, le noyau Talos ou le plugin CloudNativePG.
 
 **Correctif.** Retrait d'OBI, instrumentation par le SDK OpenTelemetry.
 
